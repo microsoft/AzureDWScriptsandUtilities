@@ -6,6 +6,19 @@
 The program processing logic and information flow is illustrated in the diagram below: 
 
 ![Preassessment Programs](https://i.imgur.com/okLZNvo.jpg)
+
+![Copy to Excel](https://github.com/Microsoft/AzureDWScriptsandUtilities/blob/master/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/Images/0-CopyToExcel.jpg)
+
+
+
+![Pre-Assessment Programs](/Images/0B-PreAssessment.jpg)
+
+
+
+
+
+
+
 Below are the steps to run the PowerShell Program(s): 
 
 
