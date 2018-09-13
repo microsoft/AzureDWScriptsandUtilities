@@ -82,7 +82,8 @@ Notes:
 
 The program processing logic and information flow is illustrated in the diagram below: 
 
-![The Scoping Tool](https://i.imgur.com/asG4HlX.jpg)
+![Pre-Assessment Programs](/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/Images/0-CopyToExcel.jpg)
+
 
 **Prerequisite** for running the scoping tool (on top of PowerShell): Install-Module ImportExcel  (Run the command from a PS command prompt.  Command Prompt must be running as admin)
 
@@ -107,5 +108,5 @@ The output results of the APS Pre-Assessment, in the form of the CSV files, are 
 
 The diagrams below shows the sample results of a APS system: 
 
+![Pre-Assessment Programs](/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/Images/0B-CopyToExcel.jpg)
 
-![The Scoping Tool (PowerShell) Diagram 2](https://i.imgur.com/FFpAWqP.jpg)
