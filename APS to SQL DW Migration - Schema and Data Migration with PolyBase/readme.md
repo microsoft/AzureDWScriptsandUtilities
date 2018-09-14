@@ -24,10 +24,8 @@ The six-step migration process is illustrated in the diagram below. Step 1, 4, 5
 
 As illustrated in the above diagram, the output of the step 1 is used as input to the step 2. The output of the step 2 is used as input to Step 3. The output of the step 3 is used as input to Step 4, 5, and subsequently, step 6. In each of the steps 1-5, T-SQL Scripts are generated as output files based on designed processing logic. The Output T-SQL Scripts of the step 3, step 4, and step 5 are used as input to step 6, which is to deploy T-SQL DDLs into Azure SQLDW (Tables, Views, Stored Procedures, External Tables), and then run APS Export and SQLDW Import scripts, respectively. 
 
-The PowerShell or Python Scripts along with the documentations can be found by clicking the following links:
-
-
-The tools and documentation for each step of the process is stored in the following sub-directories: 
+The PowerShell or Python Scripts along with the documentations can be found in this repository. 
+Each step of the process can be found by clicking the following the corresponding sub-directory (with links below): 
 
 **1. [CreateMPPScripts](https://github.com/Microsoft/AzureDWScriptsandUtilities/tree/master/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/1_CreateMPPScripts "Step 1: Create MPP Scripts") (PowerShell)**: Create MPP T-SQL scripts from APS.
 

@@ -1,14 +1,11 @@
 
 # **6_DeployScripts (PowerShell):** Deploy Generated T-SQL Scripts for Exporting APS Data and Importing Data into Azure SQLDW 
- 
-
-## **To Do List** ##
-(1) Move Step 1 to overall step on how to download Program scripts. and then modify Step 6. 
 
 ## **How to Run the Program** ##
 
 The program processing logic and information flow is illustrated in the diagram below: 
-![Step 6: Deploy Scripts](https://i.imgur.com/A0zdOmM.jpg)
+
+![Step 6: Deploy Scripts](/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/Images/6-DeployScripts.jpg)
 
 
 The Deployment script is designed to run any .sql file.  For the purpose of the migration, it can be used to deploy objects to APS or Azure SQLDW.  This tool can drop an existing object before running the .sql file.
