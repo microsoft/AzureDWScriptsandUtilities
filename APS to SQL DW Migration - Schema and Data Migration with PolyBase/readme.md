@@ -10,7 +10,7 @@ The results of the Pre-Assessment Tool can then be summarized by the Scoping Too
 
 The tools and documentation for the tools can be found by the link below: 
 
-**0. [Pre-AssessmentAndMigrationScoping](http://www.microsoft.com "Step 0: APS Pre-Assessment and Migration Scoping") (PowerShell)**: Gather APS meta data and analyze the results to aid scoping migration effort.
+**0. [Pre-AssessmentAndMigrationScoping](https://github.com/Microsoft/AzureDWScriptsandUtilities/tree/master/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/0_PreAssessment "Step 0: APS Pre-Assessment and Migration Scoping") (PowerShell)**: Gather APS meta data and analyze the results to aid scoping migration effort.
 
 
 ## The Six-Step Migration Process
