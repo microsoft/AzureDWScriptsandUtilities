@@ -19,8 +19,7 @@ The next six sub-folder (directory) contains the scripts and documentation for t
 
 The six-step migration process is illustrated in the diagram below. Step 1, 4, 5, and 6 are written in PowerShell while step 2 and 3 are written in Python. 
 
-
-![6-Step Migration Process](https://i.imgur.com/X7jnK80.jpg)
+![6-Step Migration Process](/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/Images/6-step-process.jpg)
 
 
 As illustrated in the above diagram, the output of the step 1 is used as input to the step 2. The output of the step 2 is used as input to Step 3. The output of the step 3 is used as input to Step 4, 5, and subsequently, step 6. In each of the steps 1-5, T-SQL Scripts are generated as output files based on designed processing logic. The Output T-SQL Scripts of the step 3, step 4, and step 5 are used as input to step 6, which is to deploy T-SQL DDLs into Azure SQLDW (Tables, Views, Stored Procedures, External Tables), and then run APS Export and SQLDW Import scripts, respectively. 
@@ -30,17 +29,17 @@ The PowerShell or Python Scripts along with the documentations can be found by c
 
 The tools and documentation for each step of the process is stored in the following sub-directories: 
 
-**1. [CreateMPPScripts](http://www.microsoft.com "Step 1: Create MPP Scripts") (PowerShell)**: Create MPP T-SQL scripts from APS.
+**1. [CreateMPPScripts](https://github.com/Microsoft/AzureDWScriptsandUtilities/tree/master/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/1_CreateMPPScripts "Step 1: Create MPP Scripts") (PowerShell)**: Create MPP T-SQL scripts from APS.
 
-**2. [CleanScripts](http://www.microsoft.com "Step 2: Clean Up MPP Scripts") (Python)**: Clean up output T-SQL scripts from Step 1.
+**2. [CleanScripts](https://github.com/Microsoft/AzureDWScriptsandUtilities/tree/master/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/2_CleanScripts "Step 2: Clean Up MPP Scripts") (Python)**: Clean up output T-SQL scripts from Step 1.
 
-**3. [ChangeSchemas](http://www.microsoft.com "Step 3: Change Schemas of the APS Scripts") (Python)**: Make Schema changes to MPP DDL Scripts. 
+**3. [ChangeSchemas](https://github.com/Microsoft/AzureDWScriptsandUtilities/tree/master/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/3_ChangeSchemas "Step 3: Change Schemas of the APS Scripts") (Python)**: Make Schema changes to MPP DDL Scripts. 
 
-**4. [CreateAPSExportScriptSQLDWImportScripts](http://www.microsoft.com "Step 4: Create T-SQL Scripts to Export APS Data and Import Data Into Azure SQLDW ") (PowerShell)**: Create Data Export/Import Scripts.
+**4. [CreateAPSExportScriptSQLDWImportScripts](https://github.com/Microsoft/AzureDWScriptsandUtilities/tree/master/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/4_CreateAPSExportScriptSQLDWImportScript "Step 4: Create T-SQL Scripts to Export APS Data and Import Data Into Azure SQLDW ") (PowerShell)**: Create Data Export/Import Scripts.
 
-**5. [CreateExternalTablesSQLDW](http://www.mocrosoft.com "Step 5: Generate T-SQL Scripts to Create Azure SQLDW External Tables") (PowerShell)**:  Create External Tables for SQLDW. 
+**5. [CreateExternalTablesSQLDW](https://github.com/Microsoft/AzureDWScriptsandUtilities/tree/master/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/5_CreateExternalTablesSQLDW "Step 5: Generate T-SQL Scripts to Create Azure SQLDW External Tables") (PowerShell)**:  Create External Tables for SQLDW. 
 
-**6. [DeployScriptsToSQLDW](http://www.microsoft.com "Step 6: Deploy (Run) T-SQL Scripts Specified in Configuration File") (PowerShell)**: Run Scripts for Migration.
+**6. [DeployScriptsToSQLDW](https://github.com/Microsoft/AzureDWScriptsandUtilities/tree/master/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/6_DeployScriptsToSqldw "Step 6: Deploy (Run) T-SQL Scripts Specified in Configuration File") (PowerShell)**: Run Scripts for Migration.
 
 * Export APS Data to Azure – Run T-SQL Scripts from output generated in step 4 above
 * Create Tables/Views/SPs – Run T-SQL Scripts from output generated in step 3 above (SP’s require manual changes first or afterwards)
