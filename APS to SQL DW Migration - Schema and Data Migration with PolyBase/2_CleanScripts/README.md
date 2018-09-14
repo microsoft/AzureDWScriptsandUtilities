@@ -7,7 +7,8 @@
 
 The program processing logic and information flow is illustrated in the diagram below: 
 
-![Step 2: Clean Up APS MPP Scripts](https://i.imgur.com/V4Jmj8T.jpg)
+![Step 2: Clean Up APS MPP Scripts](/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/Images/2-CleanScripts.jpg)
+
 
 Below are the steps to run the Python Program: 
 
