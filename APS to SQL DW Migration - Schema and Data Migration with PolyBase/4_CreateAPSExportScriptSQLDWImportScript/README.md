@@ -4,7 +4,9 @@
 ## **How to Run the Program** ##
 
 The program processing logic and information flow is illustrated in the diagram below: 
-![Step 4: Generate T-SQL Scripts for Exporting APS Data and Importing Into Azure SQLDW](https://i.imgur.com/ifrYS48.jpg)
+
+![Step 4: Generate T-SQL Scripts for Exporting APS Data and Importing Into Azure SQLDW](/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/Images/4-CreateExportImportScripts.jpg)
+
 
 Below are the steps to run the PowerShell Program(s): 
 

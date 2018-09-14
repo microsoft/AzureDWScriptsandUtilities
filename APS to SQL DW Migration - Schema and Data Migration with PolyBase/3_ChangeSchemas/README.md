@@ -6,7 +6,7 @@
 
 The program processing logic and information flow is illustrated in the diagram below: 
 
-![Step 3: Change APS Schemas and Other Syntaxes for Code Migratio](/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/Images/3-ChangeSchemas.jpg)
+![Step 3: Change APS Schemas and Other Syntaxes for Code Migration](/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/Images/3-ChangeSchemas.jpg)
 
 Below are the steps to run the Python Program: 
 
