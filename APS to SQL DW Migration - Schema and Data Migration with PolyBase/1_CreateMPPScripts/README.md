@@ -8,6 +8,9 @@ The program processing logic and information flow is illustrated in the diagram 
 
 ![Step 1: CreateMppObjects](https://i.imgur.com/cazsRYU.jpg)
 
+![Create MPP Scripts Programs](/APS%20to%20SQL%20DW%20Migration%20-%20Schema%20and%20Data%20Migration%20with%20PolyBase/Images/1-CreateMPPScripts.jpg)
+
+
 Below are the steps to run the PowerShell Programs: 
 
 **Step 1:** Download [DWScripter]( https://github.com/Microsoft/DWScripter "DWScripter Github Page") (^^^Need Version Number^^^) from github and place the exe on the machine to run the PowerShell scripts: ScriptMPPObjectsDriver.ps1 and ScriptObjectsToDSQL.ps1.
