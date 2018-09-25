@@ -96,6 +96,26 @@ Function GetDropStatement
 		
 }
 
+Function GetTruncateStatement
+{ [CmdletBinding()] 
+    param( 
+    [Parameter(Position=0, Mandatory=$true)] [string]$SchemaName, 
+    [Parameter(Position=1, Mandatory=$false)] [string]$ObjectName,
+    [Parameter(Position=2, Mandatory=$true)] [string]$ObjectType
+    ) 
+
+    if($ObjectType.TOUpper() -eq "TABLE")
+    {
+		$Query = "If Exists(Select 1 From sys.tables t Where t.name = '" + $ObjectName + "' and schema_name(schema_id) = '" + $SchemaName + "') Truncate table [" + $SchemaName + "].[" + $ObjectName + "]"
+    }
+ 	else {$Query = ""}
+
+    #write-host $query
+
+	return $Query
+		
+}
+
 $ReturnValues = @{}
 
 $error.Clear()
@@ -164,7 +184,7 @@ ForEach ($S in $csvFile )
 		$DatabaseName = $S.DatabaseName
 		$FilePath = $S.FilePath
 		$FileName = $S.FileName
-		$DropIfExists = $S.DropIfExists
+		$DropTruncateIfExists = $S.DropTruncateIfExists.TOUpper()
 		$SchemaName = $S.SchemaName
 		$ObjectName = $S.ObjectName
         $CreateSchema = $S.CreateSchema
@@ -174,11 +194,18 @@ ForEach ($S in $csvFile )
 				      
 		$ScriptToRun = $FilePath + "\" +$FileName
 		
-		if($DropIfExists -eq 1)
+		if($DropTruncateIfExists -eq 'DROP')
 		{
             $Query = GetDropStatement -SchemaName $SchemaName -objectName $ObjectName -ObjectType $ObjectType
             
             $ReturnValues = RunSQLScriptFile -ServerName $ServerName -Username $UserName -Password $Password -SQLDWADIntegrated $ConnectToSQLDW -Database $DatabaseName -Query $Query #-SchemaName $SchemaName -TableName $TableName -DropIfExists $DropIfExists -StatusLogFile $StatusLogFile
+		}
+		
+		if($DropTruncateIfExists -eq 'TRUNCATE')
+		{
+			$Query = GetTruncateStatement -SchemaName $SchemaName -objectName $ObjectName -ObjectType $ObjectType
+
+			$ReturnValues = RunSQLScriptFile -ServerName $ServerName -Username $UserName -Password $Password -SQLDWADIntegrated $ConnectToSQLDW -Database $DatabaseName -Query $Query 
 		}
 
 
