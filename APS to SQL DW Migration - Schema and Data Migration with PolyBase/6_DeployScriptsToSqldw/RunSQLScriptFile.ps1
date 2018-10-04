@@ -8,8 +8,8 @@ function RunSQLScriptFile
     [Parameter(Position=3, Mandatory=$false)] [string]$Username, 
     [Parameter(Position=4, Mandatory=$false)] [string]$Password,
 	[Parameter(Position=5, Mandatory=$false)] [string]$SQLDWADIntegrated,
-    [Parameter(Position=6, Mandatory=$false)] [Int32]$QueryTimeout=600, 
-    [Parameter(Position=7, Mandatory=$false)] [Int32]$ConnectionTimeout=30, 
+    [Parameter(Position=6, Mandatory=$false)] [Int32]$QueryTimeout=0, 
+    [Parameter(Position=7, Mandatory=$false)] [Int32]$ConnectionTimeout=0, 
     [Parameter(Position=8, Mandatory=$false)] [string]$InputFile,#[ValidateScript({test-path $_})] , 
     [Parameter(Position=9, Mandatory=$false)] [ValidateSet("DataSet", "DataTable", "DataRow")] [string]$As="DataSet",
 	[Parameter(Position=10, Mandatory=$false)] [string]$Variables=''

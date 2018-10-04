@@ -96,6 +96,25 @@ Function GetDropStatement
 		
 }
 
+
+Function GetSchemaStatement
+{ [CmdletBinding()] 
+    param( 
+    [Parameter(Position=0, Mandatory=$true)] [string]$SchemaName, 
+    [Parameter(Position=1, Mandatory=$false)] [string]$SchemaAuth
+    ) 
+
+	$Query = "CREATE SCHEMA $SchemaName"
+
+	If($SchemaAuth -ne "")
+		{
+			$Query = $Query + ' AUTHORIZATION [' +  $SchemaAuth + ']'
+		}
+	
+	return $Query
+		
+}
+
 Function GetTruncateStatement
 { [CmdletBinding()] 
     param( 
@@ -118,6 +137,7 @@ Function GetTruncateStatement
 
 $ReturnValues = @{}
 
+
 $error.Clear()
 
 ##############################################################
@@ -126,7 +146,11 @@ $error.Clear()
 
 $ScriptsToRunDriverFile = Read-Host -prompt "Enter the name of the ScriptToRun csv File."
 	if($ScriptsToRunDriverFile -eq "" -or $ScriptsToRunDriverFile -eq $null)
-	{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\SqldwCreateTablesViewsAndSPs.csv"}
+	#{$ScriptsToRunDriverFile = "C:\temp\andytables02.txt"}
+	#{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\OneApsExportConfigFile_Generated.csv"}
+	#{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\OneSqldwExtTablesConfigFile_Generated.csv"} #External Tables
+	#{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\OneSqldwObjectsConfigFile_Generated.csv"}#Table, Views & SPs
+	{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\OneSqldwImportConfigFile_Generated.csv"}#ImprtTables
 	#{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\SqldwCreateTables.csv"}
 	#{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\ApsCreateExtTables.csv"}
 		#{$ScriptsToRunDriverFile = "C:\Temp\TableScriptsToRun.csv"}
@@ -169,7 +193,7 @@ $csvFile = Import-Csv $ScriptsToRunDriverFile
 #}
 
 #Get the header Row
-$HeaderRow = "Active","ServerName","DatabaseName","FilePath","CreateSchema","SchemaAuth","ObjectType","ObjectName","FileName","DropIfExists","SchemaName","Variables","Status","RunDurationSec"
+$HeaderRow = "Active","ServerName","DatabaseName","FilePath","CreateSchema","SchemaAuth","ObjectType","ObjectName","FileName","DropTruncateIfExists","SchemaName","Variables","Status","RunDurationSec"
 $HeaderRow  -join ","  >> $StatusLogFile
 
 $StartDateBegin=(Get-Date)
@@ -191,7 +215,12 @@ ForEach ($S in $csvFile )
         $SchemaAuth = $S.SchemaAuth
         $ObjectType = $S.ObjectType
 		$Variables = $S.Variables
-				      
+		
+		if($DropTruncateIfExists -eq '' -or [string]::IsNullOrEmpty($DropTruncateIfExists))
+		{
+			$DropTruncateIfExists = 0
+		}
+		
 		$ScriptToRun = $FilePath + "\" +$FileName
 		
 		if($DropTruncateIfExists -eq 'DROP')
@@ -209,17 +238,14 @@ ForEach ($S in $csvFile )
 		}
 
 
-        if($ReturnValues.Get_Item("Status") -eq 'Success' -or $DropIfExists -eq 0)
+        if($ReturnValues.Get_Item("Status") -eq 'Success' -or $DropTruncateIfExists -eq 0)
 		{
             If($CreateSchema -eq 1) 
             {
-                $ScriptToRun = $(resolve-path $ScriptToRun).path 
-                $Query =  [System.IO.File]::ReadAllText("$ScriptToRun")
-                If($SchemaAuth -ne "")
-                {
-                    $Query = $Query + ' AUTHORIZATION [' +  $SchemaAuth + ']'
-                }
-                 
+                #$ScriptToRun = $(resolve-path $ScriptToRun).path 
+                #$Query =  [System.IO.File]::ReadAllText("$ScriptToRun")
+				$Query = GetSchemaStatement -SchemaName $SchemaName -SchemaAuth $SchemaAuth
+				             
                 $ReturnValues = RunSQLScriptFile -ServerName $ServerName -Username $UserName -Password $Password -SQLDWADIntegrated $ConnectToSQLDW -Database $DatabaseName -Query $Query -Variables $Variables #-SchemaName $SchemaName -TableName $TableName -DropIfExists $DropIfExists -StatusLogFile $StatusLogFile
             }
             else
@@ -231,22 +257,24 @@ ForEach ($S in $csvFile )
 		if($ReturnValues.Get_Item("Status") -eq 'Success')
 		{
             $EndDate=(Get-Date)
-            $DurationSec = (New-TimeSpan -Start $StartDate -End $EndDate).Seconds
+            $Timespan = (New-TimeSpan -Start $StartDate -End $EndDate)
+            $DurationSec = ($Timespan.seconds + ($Timespan.Minutes * 60) + ($Timespan.Hours * 60 * 60))
             $Message = "Process Completed for File: " + $FileName + " Duration: " + $DurationSec
-	  		Write-Host $Message
+	  		Write-Host $Message -ForegroundColor White -BackgroundColor Black
 			$Status = $ReturnValues.Get_Item("Status")
 
-			$HeaderRow = 0,$ServerName,$DatabaseName,$FilePath,$CreateSchema,$SchemaAuth,$ObjectType,$ObjectName,$FileName,$DropIfExists,$SchemaName,$Variables,$Status,$DurationSec
+			$HeaderRow = 0,$ServerName,$DatabaseName,$FilePath,$CreateSchema,$SchemaAuth,$ObjectType,$ObjectName,$FileName,$DropTruncateIfExists,$SchemaName,$Variables,$Status,$DurationSec
 			$HeaderRow  -join ","  >> $StatusLogFile
 	   	}
     	else
     	{
              $EndDate=(Get-Date)
-             $DurationSec = (New-TimeSpan -Start $StartDate -End $EndDate).Seconds
+             $Timespan = (New-TimeSpan -Start $StartDate -End $EndDate)
+             $DurationSec = ($Timespan.seconds + ($Timespan.Minutes * 60) + ($Timespan.Hours * 60 * 60))
              $ErrorMsg = "Error running Script for File: " + $FileName + "Error: " + $ReturnValues.Get_Item("Msg") + "Duration: " + $DurationSec + " Seconds"
     		 Write-Host $ErrorMsg -ForegroundColor Red -BackgroundColor Black
 			 $Status = "Error: " + $ReturnValues.Get_Item("Msg")
-			 $HeaderRow = $Active,$ServerName,$DatabaseName,$FilePath,$CreateSchema,$SchemaAuth,$ObjectType,$ObjectName,$FileName,$DropIfExists,$SchemaName,$Variables,$Status,$DurationSec
+			 $HeaderRow = $Active,$ServerName,$DatabaseName,$FilePath,$CreateSchema,$SchemaAuth,$ObjectType,$ObjectName,$FileName,$DropTruncateIfExists,$SchemaName,$Variables,$Status,$DurationSec
 			 $HeaderRow  -join ","  >> $StatusLogFile
     	}
 	}
@@ -256,15 +284,16 @@ ForEach ($S in $csvFile )
 		$DatabaseName = $S.DatabaseName
 		$FilePath = $S.FilePath
 		$FileName = $S.FileName
-		$DropIfExists = $S.DropIfExists
+		$DropTruncateIfExists = $S.DropTruncateIfExists
 		$SchemaName = $S.SchemaName
 		$ObjectName = $S.ObjectName
         $ObjectType = $S.ObjectType
 		
         $EndDate=(Get-Date)
-        $DurationSec = (New-TimeSpan -Start $StartDate -End $EndDate).Seconds
+        $Timespan = (New-TimeSpan -Start $StartDate -End $EndDate)
+    	$DurationSec = ($Timespan.seconds + ($Timespan.Minutes * 60) + ($Timespan.Hours * 60 * 60))
 		$Status = 'Status = ' + $Active + ' Process did not run.'
-		$HeaderRow = $Active,$ServerName,$DatabaseName,$FilePath,$CreateSchema,$SchemaAuth,$ObjectType,$ObjectName,$FileName,$DropIfExists,$SchemaName,$Variables,$Status,$DurationSec
+		$HeaderRow = $Active,$ServerName,$DatabaseName,$FilePath,$CreateSchema,$SchemaAuth,$ObjectType,$ObjectName,$FileName,$DropTruncateIfExists,$SchemaName,$Variables,$Status,$DurationSec
 		$HeaderRow  -join ","  >> $StatusLogFile
 	}
 
