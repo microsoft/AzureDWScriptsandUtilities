@@ -63,10 +63,11 @@ $PreAssessmentOutputPath = Read-Host -prompt "Enter the name of the Output File 
 	{$PreAssessmentOutputPath = $defaultPreAssessmentOutputPath}
 
 # Note: When we publish this code, the IP address needs to be deleted.
-$msftApsServerName = "10.209.220.105,17001" # sqlservercharis.database.windows.net#10.209.220.105,17001
+$defaultApsServerName = "APS,17001"                   # Use this if integrated security 
+#$defaultApsServerName = "1#.20#.22#.###,17001"       # Please fill in your own APS IP address 
 $ServerName = Read-Host -prompt "Enter the name of the Server ('APS Server Name or IP Address, 17001')"
 	if($ServerName -eq "" -or $ServerName -eq $null) 
-		{$ServerName = $msftApsServerName} 
+		{$ServerName = $defaultApsServerName} 
 
 $UseIntegrated = Read-Host -prompt "Enter the 'Yes' to connect using integrated Security, otherwise Enter 'No' "
 $UseIntegrated = $UseIntegrated.ToUpper()
