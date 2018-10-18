@@ -87,9 +87,9 @@ $ScriptPath = Split-Path $MyInvocation.MyCommand.Path -Parent
 
 foreach ($f in Get-ChildItem -path $ConfigFilePath  -Filter *.csv)
 {
-	Write-Host "File Name: " $f.Name.ToString()	
+	Write-Host "File Name: " $f.FullName.ToString()	
 
-	$ObjectsToScriptDriverFile = $f.Name.ToString()	
+	$ObjectsToScriptDriverFile = $f.FullName.ToString()	
 
 	$csvFile = Import-Csv $ObjectsToScriptDriverFile #-ErrorVariable $ImportError -ErrorAction SilentlyContinue -
 
