@@ -13,7 +13,7 @@
 
 
 # Get config file driver file name 
-$defaultDriverFileName = "C:\APS2SQLDW\6_DeployScriptsToSqldw\ConfigFileDriver.csv"
+$defaultDriverFileName = "C:\APS2SQLDW\6_DeployScriptsToSqldw\ConfigFileDriver_Step6.csv"
 $ConfigFileDriverFileName = Read-Host -prompt "Enter the name of the config file driver file or press the 'Enter' key to accept the default [$($defaultDriverFileName)]"
 if($ConfigFileDriverFileName -eq "" -or $ConfigFileDriverFileName -eq $null)
 {$ConfigFileDriverFileName = $defaultDriverFileName}
@@ -41,8 +41,9 @@ ForEach ($csvItem in $ConfigFileDriverFile )
 	elseif ($name -eq 'SqldwDatabaseName') { $SqldwDatabaseName = $value }  
 	elseif ($name -eq 'CreateSchemaFlag') { $CreateSchemaFlag = $value }  
 	elseif ($name -eq 'SchemaAuth') { $SchemaAuth = $value }  
-	elseif ($name -eq 'DropIfExistsFlag') { $DropIfExistsFlag = $value }  
+	elseif ($name -eq 'DropTruncateIfExistsFlag') { $DropTruncateIfExistsFlag = $value }  
 	elseif ($name -eq 'Variables') { $Variables = $value }  
+	elseif ($name -eq 'SchemaFileFullPath') { $SchemaFileFullPath = $value }  
 	elseif ($name -eq 'OutputObjectsFolder') { $OutputObjectsFolder = $value }  # there is really no objects to be produced in step 6
 	elseif ($name -eq 'ApsExportScriptsFolder') 
 	{ 
@@ -89,7 +90,7 @@ ForEach ($csvItem in $ConfigFileDriverFile )
 
 # Get Schema Mapping File into hashtable - same matrix in python file (step 3)
 $smHT = @{}
-$schemaMappingFile = Import-Csv $schemaFileFullPath
+$schemaMappingFile = Import-Csv $SchemaFileFullPath
 $htCounter = 0 
 foreach ($item in $schemaMappingFile)
 {
@@ -173,7 +174,8 @@ Function getObjectNames ($line, $type)
 
 
 # Get all the database names from directory names 
-$subFolderPaths = Get-ChildItem -Path $SqldwObjectScriptsFolder -Exclude *.dsql -Depth 1
+#$subFolderPaths = Get-ChildItem -Path $SqldwObjectScriptsFolder -Exclude *.dsql -Depth 1
+$subFolderPaths = Get-ChildItem -Path $SqldwObjectScriptsFolder -Exclude *.dsql
 $allDirNames = Split-Path -Path $subFolderPaths -Leaf
 $dbNames = New-Object 'System.Collections.Generic.List[System.Object]'
 #get only dbNames 
@@ -326,7 +328,7 @@ foreach ($dbName in $dbNames)
 		elseif ($key -eq "SqldwImport")  
 		{ 
 			#$objectType = "EXT"  #???? 
-			$objectType = "Table"  #???? 
+			$objectType = ""  #???? 
 			$serverName = $SqldwServerName
 			$databaseName = $SqldwDatabaseName
 	  } 
@@ -386,21 +388,29 @@ foreach ($dbName in $dbNames)
 
 			$row = New-Object PSObject 		
 			  
+			$filefolderNoSlash = $inFileFolder.Substring(0, $inFileFolder.Length-1) # get rid of '/' at end of the path
+
+			#Write-Output "Value " $filefolderNoSlash
+			
 			$row | Add-Member -MemberType NoteProperty -Name "Active" -Value $ActiveFlag -force
 			$row | Add-Member -MemberType NoteProperty -Name "ServerName" -Value $serverName -force
 			$row | Add-Member -MemberType NoteProperty -Name "DatabaseName" -Value $databaseName  -force
-			$row | Add-Member -MemberType NoteProperty -Name "FilePath" -Value $inFileFolder -force
+			#$row | Add-Member -MemberType NoteProperty -Name "FilePath" -Value $inFileFolder -force
+			$row | Add-Member -MemberType NoteProperty -Name "FilePath" -Value $filefolderNoSlash -force  
 			$row | Add-Member -MemberType NoteProperty -Name "CreateSchema" -Value $CreateSchemaFlag -force
 			$row | Add-Member -MemberType NoteProperty -Name "ObjectType" -Value $objectType -force
 			$row | Add-Member -MemberType NoteProperty -Name "SchemaAuth" -Value $SchemaAuth  -force
 			$row | Add-Member -MemberType NoteProperty -Name "SchemaName" -Value $schemaName -force
 			$row | Add-Member -MemberType NoteProperty -Name "ObjectName" -Value $objectName -force
-			$row | Add-Member -MemberType NoteProperty -Name "DropIfExists" -Value $DropIfExistsFlag -force
+			$row | Add-Member -MemberType NoteProperty -Name "DropTruncateIfExists" -Value $DropTruncateIfExistsFlag -force
 			$row | Add-Member -MemberType NoteProperty -Name "Variables" -Value $Variables -force
 			$row | Add-Member -MemberType NoteProperty -Name "FileName" -Value 	$fileName  -force
 			Export-Csv -InputObject $row -Path $outCsvFileName -NoTypeInformation -Append -Force 
-			 
-			if ($oneConfigFile -eq "YES")
+		
+			
+			#$OneConfigFileChoice
+			#if ($oneConfigFile -eq "YES")
+			if ($OneConfigFileChoice -eq "YES")
 		 	{
 				if ( ($key -eq "SqldwTables") -or ($key -eq "SqldwViews") -or ($key -eq "SqldwSPs") )
 				{

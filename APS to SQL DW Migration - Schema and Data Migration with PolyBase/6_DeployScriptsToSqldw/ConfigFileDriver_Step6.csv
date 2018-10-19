@@ -1,0 +1,21 @@
+Name,Value,
+OneConfigFileChoice,Yes,"If Yes, All DBs are combined. "
+GeneratedConfigFileFolder,C:\APS2SQLDW\6_DeployScriptsToSqldw\,
+OneApsExportConfigFileName,OneApsExportConfigFile_Generated.csv,ALL DBs
+OneSqldwObjectsConfigFileName,OneSqldwObjectsConfigFile_Generated.csv,ALL DBs
+OneSqldwImportConfigFileName,OneSqldwImportConfigFile_Generated.csv,ALL DBs
+OneSqldwExtTablesConfigFileName,OneSqldwExtTablesConfigFile_Generated.csv,ALL DBs
+ActiveFlag,1,
+ApsServerName,"""APS, 17001"" ",
+SqldwServerName,AzureSQLDW_ServrName.database.windows.net,
+SqldwDatabaseName,yourSQLDW001,
+ApsExportScriptsFolder,C:\APS2SQLDW\Output\4_CreateAPSExportScriptSQLDWImportScript\ExportAPS\,
+SqldwImportScriptsFolder,C:\APS2SQLDW\Output\4_CreateAPSExportScriptSQLDWImportScript\ImportSQLDW\,
+SqldwObjectScriptsFolder,C:\APS2SQLDW\Output\3_ChangeSchemas\,
+SchemaFileFullPath,C:\APS2SQLDW\3_ChangeSchemas\schemas.csv,
+SqldwExternalTablesFolder,C:\APS2SQLDW\Output\5_CreateExternalTablesSQLDW\,
+CreateSchemaFlag,,
+SchemaAuth,,
+,0,
+DropTruncateIfExistsFlag,,
+OutputObjectsFolder,C:\APS2SQLDW\Output\6_DeployScriptsToSqldw\,
