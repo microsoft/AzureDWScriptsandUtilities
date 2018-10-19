@@ -13,7 +13,7 @@
 
 
 # Get config file driver file name 
-$defaultDriverFileName = "C:\APS2SQLDW\5_CreateExternalTablesSQLDW\ConfigFileDriver.csv"
+$defaultDriverFileName = "C:\APS2SQLDW\5_CreateExternalTablesSQLDW\ConfigFileDriver_Step5.csv"
 $configFileDriverFileName = Read-Host -prompt "Enter the name of the config file driver file or press the 'Enter' key to accept the default [$($defaultDriverFileName)]"
 if($configFileDriverFileName -eq "" -or $configFileDriverFileName -eq $null)
 {$configFileDriverFileName = $defaultDriverFileName}
@@ -146,7 +146,9 @@ Function getObjectNames ($line, $type)
 }
 
 # Get all the database names from directory names 
-$inputObjectsFolderPath = Get-ChildItem -Path $InputObjectsFolder -Exclude *.dsql -Depth 1
+#$inputObjectsFolderPath = Get-ChildItem -Path $InputObjectsFolder -Exclude *.dsql -Depth 1
+$inputObjectsFolderPath = Get-ChildItem -Path $InputObjectsFolder
+
 $allDirNames = Split-Path -Path $inputObjectsFolderPath -Leaf
 $dbNames = New-Object 'System.Collections.Generic.List[System.Object]'
 #get only dbNames 
@@ -224,7 +226,7 @@ foreach ($dbName in $dbNames)
 			}
 			else 
 			{
-				Write-Output "Unexpected first line here: " $firsLine
+				Write-Output "Unexpected first line here: " $firsLine " in file: " $fileName " DB: " $dbName
 			}					 
 			 			 
 		 	$sqldwSchema = $parts.Schema
