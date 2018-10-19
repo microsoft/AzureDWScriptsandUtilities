@@ -13,7 +13,7 @@
 
 
 # Get config file driver file name 
-$defaultDriverFileName = "C:\APS2SQLDW\4_CreateAPSExportScriptSQLDWImportScript\ConfigFileDriver.csv"
+$defaultDriverFileName = "C:\APS2SQLDW\4_CreateAPSExportScriptSQLDWImportScript\ConfigFileDriver_Step4.csv"
 $configFileDriverFileName = Read-Host -prompt "Enter the name of the config file driver file or press the 'Enter' key to accept the default [$($defaultDriverFileName)]"
 if($configFileDriverFileName -eq "" -or $configFileDriverFileName -eq $null)
 {$configFileDriverFileName = $defaultDriverFileName}
@@ -147,8 +147,13 @@ Function getObjectNames ($line, $type)
   return $parts 
 }
 
+#Write-Output "InputObjectsFolder: " $InputObjectsFolder
 # Get all the database names from directory names 
-$inputObjectsFolderPath = Get-ChildItem -Path $InputObjectsFolder -Exclude *.dsql -Depth 1
+#$inputObjectsFolderPath = Get-ChildItem -Path $InputObjectsFolder -Exclude *.dsql -Depth 1
+
+$inputObjectsFolderPath = Get-ChildItem -Path $InputObjectsFolder 
+#Write-Output " inputObjectsFolderPath" $inputObjectsFolderPath
+
 $allDirNames = Split-Path -Path $inputObjectsFolderPath -Leaf
 $dbNames = New-Object 'System.Collections.Generic.List[System.Object]'
 #get only dbNames 
@@ -200,7 +205,7 @@ foreach ($dbName in $dbNames)
 
 		foreach ($f in Get-ChildItem -path $inFileFolder  -Filter *dsql)
 		{
-			# exclude IDXS_ and STATS_ 
+            # exclude IDXS_ and STATS_ 
 		 	if (($f.Name.ToString() -Match "IDXS_") -or ($f.Name.ToString() -Match "STATS_"))
 		 	{
 				 continue 
@@ -225,7 +230,7 @@ foreach ($dbName in $dbNames)
 			}
 			else 
 			{
-				Write-Output "Unexpected first line here: " $firsLine
+				Write-Output "Unexpected first line here: " $firsLine " in file: " $f.FullName
 			}		
 			 
 		 	$sqldwSchema = $parts.Schema
