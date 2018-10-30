@@ -29,10 +29,24 @@ function RunSQLScriptFile
     } 
 	if ($Variables)
 	{
-		 $splitstr = $Variables.Split("=")
-		 $search =  $splitstr[0]
-		 $replace = $splitstr[1]
-		 $Query = $Query.Replace($search,$replace)
+		 if($Variables -match ";")
+		 {
+			 $splitvar = $Variables.Split(";")
+			 foreach($var in $splitvar)
+			 {
+				$splitstr = $var.Split("|")
+				$search =  "(?<![\w\d])" + $splitstr[0] + "(?![\w\d])"
+				$replace = $splitstr[1]
+				$Query = $Query -replace $search, $replace
+			 }
+		 }
+		 else {
+			$splitstr = $Variables.Split("|")
+			$search =  "(?<![\w\d])" + $splitstr[0] + "(?![\w\d])"
+			$replace = $splitstr[1]
+			$Query = $Query -replace $search, $replace
+		 }
+		 		 
 	}
  
     #Initial Catalog=lasr-sqldwdb-dev1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Authentication="Active Directory Integrated";

@@ -1,7 +1,15 @@
 
 # **6_DeployScripts (PowerShell):** Deploy Generated T-SQL Scripts for Exporting APS Data and Importing Data into Azure SQLDW 
 
-## **How to Run the Program** ##
+## Change Log**
+
+| Change Date  | Description                                                  |
+| ------------ | ------------------------------------------------------------ |
+| Oct 30, 2018 | Changed the variable column to allow multiple values so that its use would be more flexible.  Variables can separated by ";".  Changed the separator for the variable Name and the Value form '=' to  '\|' |
+|              |                                                              |
+|              |                                                              |
+
+## How to Run the Program** ##
 
 The program processing logic and information flow is illustrated in the diagram below: 
 
@@ -72,7 +80,7 @@ There is also a Job-Aid PowerShell program called "**Generate_Step6_ConfigFiles.
 | ObjectType   | Type of object to Create.  Used to create the drop statement.  Valid Values: “”, TABLE, VIEW, SP, (SCHEMA,   STAT – Not implemented yet)                                                                                                                                                                                                                                                                                                      | TABLE, VIEW, SP, SCHEMA EXT . If   left blank, not drop statement is created and the .SQL file is just run. |
 | ObjectName   | Name of the object that is being   created.  Used in creating the drop   statement and logging.                                                                                                                                                                                                                                                                                                                                               | Name of the object                                                                                          |
 | DropTruncateIfExists | DROP – Drop if exist, TRUNCATE - Truncate Table if exists, NO – Do not   drop or Truncate if exist.     Create a Drop/Truncate statement if the object exists.  This could be placed in the .sql file but   having it in the config file gives the process more control.  Example:    Data has been imported into the tables, if the drop was in the .sql,   we would need to edit the file to not drop the table.  This allows the process to control it with   our having to edit the original .sql file. | DROP, TRUNCATE, NO                                                                               |
-| Variables    | Partial Implementation.  Currently supports a single variable.  This is used to replace a variable in the   .sql file.  Example use is for External   Tables.  This can be used to set the   Location, Data_Source or File_Format                                                                                                                                                                                                             | @Location=TestLoc {Location}=TestLoc {@Location}=TestLoc  Future implementation should separate variables by a;                                                                                                       |
+| Variables    | Supports a Multiple variables.  This is used to replace a variable in the   .sql file.  Example use is for External Tables and setting Location, Data_Source,  File_Format and Reject_Location to different values based on the Environment being deployed.                                                                     | @Location\|TestLoc {Location}\|TestLoc @Var1\|TestLoc;@Var2\Datasource                                                                        |
 
 
 ## **What the Program(s) Does** ##

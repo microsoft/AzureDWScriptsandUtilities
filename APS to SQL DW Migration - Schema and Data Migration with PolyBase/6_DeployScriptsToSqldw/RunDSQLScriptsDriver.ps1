@@ -146,14 +146,7 @@ $error.Clear()
 
 $ScriptsToRunDriverFile = Read-Host -prompt "Enter the name of the ScriptToRun csv File."
 	if($ScriptsToRunDriverFile -eq "" -or $ScriptsToRunDriverFile -eq $null)
-	#{$ScriptsToRunDriverFile = "C:\temp\andytables02.txt"}
-	#{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\OneApsExportConfigFile_Generated.csv"}
-	#{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\OneSqldwExtTablesConfigFile_Generated.csv"} #External Tables
-	#{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\OneSqldwObjectsConfigFile_Generated.csv"}#Table, Views & SPs
-	{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\OneSqldwImportConfigFile_Generated.csv"}#ImprtTables
-	#{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\SqldwCreateTables.csv"}
-	#{$ScriptsToRunDriverFile = "C:\APS2SQLDW\6_DeployScriptsToSqldw\ApsCreateExtTables.csv"}
-		#{$ScriptsToRunDriverFile = "C:\Temp\TableScriptsToRun.csv"}
+	{$ScriptsToRunDriverFile = "C:\Temp\SqldwImportData.csv"}
 $ConnectToSQLDW = Read-Host -prompt "How do you want to connect to SQL(ADPass, ADInt, WinInt, SQLAuth)?"
 	#if($ConnectToSQLDW.ToUpper() -ne "YES") 
 	#{$UseIntegrated = Read-Host -prompt "Enter Yes to connect with integrated Security."
@@ -171,7 +164,7 @@ If($ConnectToSQLDW.ToUpper() -eq "SQLAUTH" -or $ConnectToSQLDW.ToUpper() -eq "AD
 $StatusLogPath = Read-Host -prompt "Enter the name of the Output File Directory."
 	if($StatusLogPath -eq "" -or $StatusLogPath -eq $null) {$StatusLogPath =  "C:\temp"}
 $StatusLog = Read-Host -prompt "Enter the name of the status file."
-	if($StatusLog -eq "" -or $StatusLog -eq $null) {$StatusLog = "status.txt"}
+	if($StatusLog -eq "" -or $StatusLog -eq $null) {$StatusLog = "CreateExtInsert_V1.csv"}
 
 
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Path -Parent
@@ -274,8 +267,11 @@ ForEach ($S in $csvFile )
              $ErrorMsg = "Error running Script for File: " + $FileName + "Error: " + $ReturnValues.Get_Item("Msg") + "Duration: " + $DurationSec + " Seconds"
     		 Write-Host $ErrorMsg -ForegroundColor Red -BackgroundColor Black
 			 $Status = "Error: " + $ReturnValues.Get_Item("Msg")
+			 $Status = $Status.Replace("`r`n", "")
+			 $Status = '"' + $Status.Replace("`n", "") + '"'
 			 $HeaderRow = $Active,$ServerName,$DatabaseName,$FilePath,$CreateSchema,$SchemaAuth,$ObjectType,$ObjectName,$FileName,$DropTruncateIfExists,$SchemaName,$Variables,$Status,$DurationSec
 			 $HeaderRow  -join ","  >> $StatusLogFile
+			 $Status = ""
     	}
 	}
 	else
