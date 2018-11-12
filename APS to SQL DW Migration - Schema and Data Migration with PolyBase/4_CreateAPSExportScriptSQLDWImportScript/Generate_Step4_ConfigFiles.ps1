@@ -281,7 +281,7 @@ foreach ($dbName in $dbNames)
 				Write-Output " Check the value of the OneConfigFile. Expected Value: Yes or No. Not expected value : " $OneConfigFile
 			}
 		}
-		if (($OneConfigFile -eq "") -and [IO.File]::Exists($outCsvFileName)) 
+		if (($OneConfigFile -eq "NO") -and [IO.File]::Exists($outCsvFileName)) 
 		{
 			Write-Output "          Completed writing to outCsvFileName: " $outCsvFileName
 		}	 	
