@@ -44,12 +44,11 @@
 # SCRIPT BODY
 # =================================================================================================================================================
 
+$defaultScriptsDriverFile = "C:\APS2SQLDW\5_CreateExternalTablesSQLDW\One_ExternalTablesDriver_Generated.csv"
 
-$ScriptsDriverFile = Read-Host -prompt "Enter the name of the Export csv Driver File."
+$ScriptsDriverFile = Read-Host -prompt "Enter the name of the Export csv Driver File or Press Enter to accept default: [$defaultScriptsDriverFile] "
 	if($ScriptsDriverFile -eq "" -or $ScriptsDriverFile -eq $null)
-	{$ScriptsDriverFile = "C:\APS2SQLDW\5_CreateExternalTablesSQLDW\ScriptCreateExternalTableDriver.csv"}
-		#{$ScriptsDriverFile = "C:\Users\Charis\OneDrive - Microsoft\Powershell\CreateExternalTablesSQLDW\ScriptCreateExternalTableDriver_V1.csv"}
-
+	{$ScriptsDriverFile = $defaultScriptsDriverFile}	
 
 
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Path -Parent
