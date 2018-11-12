@@ -123,7 +123,7 @@ ForEach ($ObjectToScript in $csvFile )
     if($Active -eq '1') 
 	{
 
-        $DatabaseName = $ObjectToScript.DatabaseName
+    $DatabaseName = $ObjectToScript.DatabaseName
 		$OutputFolderPath = $ObjectToScript.OutputFolderPath
 		$FileName = $ObjectToScript.FileName
 		$SourceSchemaName= $ObjectToScript.SourceSchemaName
