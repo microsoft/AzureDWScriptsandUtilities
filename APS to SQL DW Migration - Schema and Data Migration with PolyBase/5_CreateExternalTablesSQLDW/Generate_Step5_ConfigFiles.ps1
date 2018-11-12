@@ -191,11 +191,15 @@ foreach ($dbName in $dbNames)
 	foreach ($key in $inFilePaths.Keys)
 	{
 		$inFileFolder = $inFilePaths[$key]
-		$outCsvFileName = $outFilePaths[$key] 
 
-		if (Test-Path $outCsvFileName)
+		if ($OneConfigFile -eq "NO")
 		{
-			Remove-Item $outCsvFileName -Force
+			$outCsvFileName = $outFilePaths[$key] 
+
+			if (Test-Path $outCsvFileName)
+			{
+				Remove-Item $outCsvFileName -Force
+			}
 		}
 
 		foreach ($f in Get-ChildItem -path $inFileFolder  -Filter *dsql)
@@ -256,13 +260,21 @@ foreach ($dbName in $dbNames)
 		 	$row | Add-Member -MemberType NoteProperty -Name "DataSource" -Value $ExternalDataSourceName -force
 			$row | Add-Member -MemberType NoteProperty -Name "FileFormat" -Value $fileFormat -force
 			$row | Add-Member -MemberType NoteProperty -Name "FileLocation" -Value $exportObjLocation -force
-		 	Export-Csv -InputObject $row -Path $outCsvFileName -NoTypeInformation -Append -Force 
-			if ($OneConfigFile -eq "YES")
+
+			if ($OneConfigFile -eq "NO")
+			{
+				Export-Csv -InputObject $row -Path $outCsvFileName -NoTypeInformation -Append -Force 
+			}
+		 	elseif ($OneConfigFile -eq "YES")
 		 	{
 				Export-Csv -InputObject $row -Path $combinedOutputFile -NoTypeInformation -Append -Force 
-		 	}
+			}
+			else {
+				Write-Output " Check the value of the OneConfigFile. Expected Value: Yes or No. Not expected value : " $OneConfigFile
+			}
 		}
-		if ([IO.File]::Exists($outCsvFileName)) 
+
+		if (($OneConfigFile -eq "NO") -and [IO.File]::Exists($outCsvFileName)) 
 		{
 			Write-Output "          Completed writing to outCsvFileName: " $outCsvFileName
 		}	 	
