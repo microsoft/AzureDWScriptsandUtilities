@@ -1,9 +1,9 @@
 Name,Value,Instructions 
-OneConfigFile,Yes,"If Yes, program will generate one combined config file all databases in addition to files to group by database name, table, view, and SPs"
-OneConfigFileName,ScriptCreateExportImportStatementsDriver_Generated.csv,"Specify file name only when the OneConfigFile is set to ""Yes"" "
+OneConfigFile,Yes,"Yes/No. If ""Yes"", program will generate one combined config file for all databases. If ""No"", one individual file for for each DB will be generated. "
+OneConfigFileName,One_ExpImptStmtDriver_Generated.csv,"Specify file name only when the OneConfigFile is set to ""Yes"" "
 GeneratedConfigFileFolder,C:\APS2SQLDW\4_CreateAPSExportScriptSQLDWImportScript\,This is the generated output Config File that can be used in step 4
-ExtTableShemaPrefix,EXTM_,Prefix added to internal object Schema (for Migration Purpose) to differentiate 
-ExtTablePrefix,,Prefix added to internal object Table to differentiate 
+ExtTableShemaPrefix,,Prefix added to internal object Schema (for Migration Purpose) to differentiate 
+ExtTablePrefix,EXTM_,Prefix added to internal object Table to differentiate 
 InputObjectsFolder,C:\APS2SQLDW\Output\3_ChangeSchemas\,This is where output of step 3 is stored
 SchemaMappingFileFullPath,C:\APS2SQLDW\3_ChangeSchemas\schemas.csv,This is the same schema mapping file that step 3 used. 
 ApsExportScriptsFolder,C:\APS2SQLDW\Output\4_CreateAPSExportScriptSQLDWImportScript\ExportAPS\,This is where APS Export T-SQL Scripts will reside.

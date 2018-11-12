@@ -101,9 +101,12 @@ function Display-ErrorMsg($ImportError, $ErrorMsg)
 }
 
 
-$ScriptsDriverFile = Read-Host -prompt "Enter the name of the csv Driver File."
+$defaultScriptsDriverFile = "C:\APS2SQLDW\4_CreateAPSExportScriptSQLDWImportScript\One_ExpImptStmtDriver_Generated.csv"
+
+$ScriptsDriverFile = Read-Host -prompt "Enter the name of the csv Driver File or Press 'Enter' to accept the default [$defaultScriptsDriverFile] "
 	if($ScriptsDriverFile -eq "" -or $ScriptsDriverFile -eq $null)
-	{$ScriptsDriverFile = "C:\APS2SQLDW\4_CreateAPSExportScriptSQLDWImportScript\ScriptCreateExportImportStatementsDriver.csv"}
+	{$ScriptsDriverFile = $defaultScriptsDriverFile}
+
 #$StatusLogPath = if((Read-Host -prompt "Enter the name of the Output File Directory.") -eq "") {"C:\Temp\APS_Scripts"}
 #$StatusLog = if((Read-Host -prompt "Enter the name of the status file.") -eq "") {"status.txt"}
 
