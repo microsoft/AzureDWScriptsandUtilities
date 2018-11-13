@@ -144,9 +144,13 @@ $error.Clear()
 # Config File Input 
 #############################################################
 
-$ScriptsToRunDriverFile = Read-Host -prompt "Enter the name of the ScriptToRun csv File."
+
+$defaultScriptsToRunDriverFile = "C:\Temp\SqldwImportData.csv"
+
+$ScriptsToRunDriverFile = Read-Host -prompt "Enter the name of the ScriptToRun csv File or Press 'Enter' to accept default: [$defaultScriptsToRunDriverFile]"
 	if($ScriptsToRunDriverFile -eq "" -or $ScriptsToRunDriverFile -eq $null)
-	{$ScriptsToRunDriverFile = "C:\Temp\SqldwImportData.csv"}
+	{$ScriptsToRunDriverFile = $defaultScriptsToRunDriverFile}
+
 $ConnectToSQLDW = Read-Host -prompt "How do you want to connect to SQL(ADPass, ADInt, WinInt, SQLAuth)?"
 	#if($ConnectToSQLDW.ToUpper() -ne "YES") 
 	#{$UseIntegrated = Read-Host -prompt "Enter Yes to connect with integrated Security."
