@@ -38,6 +38,13 @@ There is also a Job-Aid PowerShell program called "**Generate_Step4_ConfigFiles.
 | InsertFilePath   | Path to write the import statements                                                            | C:\Import\SQLDWScripts\                                                |
 | ImportSchema     | Name of the new schema on SQLDW                                                                | dbo                                                                    |
 
+## **Job Aid** - Programmatically Generate Config Files
+
+There is a job-aid PowerShell script named "Generate_Step4_ConfigFiles.ps1" to help you to produce configuration file(s) programmatically. It uses output produced by previous steps (for example: T-SQL script files from step 3, and schema mapping file from step 3). 
+
+It uses parameters set inside the file named "ConfigFileDriver_Step4.csv". The CSV file contains fields as value-named pairs with instructions for each field. You can set the value for each named field based on your own setup and output files. 
+
+After running the "Generate_Step4_ConfigFiles.ps1", you can then review and edit the programmatically generated configuration files based on your own needs and environment. The generated config file(s) can then be used as input to the step 4 main program (ScriptCreateExportImportStatementsDriver.ps1).
 
 ## **What the Program(s) Does** ##
 
@@ -48,7 +55,7 @@ The program generates the right structure, with the specified table, specified e
 Below are example of the T-SQL Scripts for one single table.
 
 Sample generated T-SQL scripts to export APS Table into Azure Blob Storage:  
-     
+​     
     Create External Table adventure_works.ext_adw_dbo.ext_FactFinance
     WITH (
     	LOCATION='/prod/adventure_works/dbo_FactFinance',
@@ -66,5 +73,5 @@ Sample generated T-SQL scripts to import data into Azure Blob Storage:
     	Option(Label = 'Import_Table_adw_dbo.FactFinance')
 
 
-    
-    
+​    
+​    

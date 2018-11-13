@@ -61,8 +61,18 @@ Sample Generated File: ext_adw_dbo_DimAccount_DDL.dsql
     LOCATION='/{@Var}/adw/dbo_DimAccount',  
     DATA_SOURCE = AzureBlobDS,  
     FILE_FORMAT = DelimitedNoDateZIP)
-    
-## **What the Program(s) Does** ##
+
+
+
+## **Job Aid** - Programmatically Generate Config Files
+
+There is a job-aid PowerShell script named "Generate_Step5_ConfigFiles.ps1" to help you to produce configuration file(s) programmatically. It uses output produced by previous steps (for example: T-SQL script files from step 3, schema mapping file from step 3, and Export & Import T-SQL scripts generated from Step 4). 
+
+It uses parameters set inside the file named "ConfigFileDriver_Step5.csv". The CSV file contains fields as value-named pairs with instructions for each field. You can set the value for each named field based on your own setup and output files. 
+
+After running the "Generate_Step5_ConfigFiles.ps1", you can then review and edit the programmatically generated configuration files based on your own needs and environment. The generated config file(s) can then be used as input to the step 5 main program (PowerShell: ScriptCreateExternalTableDriver.ps1).
+
+## What the Program(s) Does** ##
 
 After the data has been exported from APS, the data now needs to be inserted into SQLDW.  Before this can occur, the external table needs to be created on Azure SQLDW.  This is completed by using the create table statements and converting the statement into an external table. This PowerShell program(s) generate these "Create External Table" Statements. 
 
@@ -83,4 +93,4 @@ Sample generated T-SQL scripts for External Table Creation in Azure SQLDW:
     LOCATION='/prod/adventure_works/dbo_FactFinance',  
     DATA_SOURCE = AzureBlobDS,  
     FILE_FORMAT = DelimitedNoDateZIP)
-    
+
