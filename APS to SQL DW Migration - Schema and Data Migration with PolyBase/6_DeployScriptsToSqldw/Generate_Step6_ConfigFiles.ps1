@@ -29,7 +29,7 @@ ForEach ($csvItem in $ConfigFileDriverFile )
 	$name = $csvItem.Name.Trim()
 	$value = $csvItem.Value.Trim() 
 
-	if ($name -eq 'OneConfigFileChoice') { $OneConfigFileChoice = $value.ToUpper() } # YES or No 
+	if ($name -eq 'OneConfigFile') { $OneConfigFile = $value.ToUpper() } # YES or No 
 	elseif ($name -eq 'GeneratedConfigFileFolder') { $GeneratedConfigFileFolder = $value } 
 	elseif ($name -eq 'OneApsExportConfigFileName') { $OneApsExportConfigFileName = $value } 
 	elseif ($name -eq 'OneSqldwObjectsConfigFileName') { $OneSqldwObjectsConfigFileName = $value }
@@ -395,7 +395,6 @@ foreach ($dbName in $dbNames)
 			$row | Add-Member -MemberType NoteProperty -Name "Active" -Value $ActiveFlag -force
 			$row | Add-Member -MemberType NoteProperty -Name "ServerName" -Value $serverName -force
 			$row | Add-Member -MemberType NoteProperty -Name "DatabaseName" -Value $databaseName  -force
-			#$row | Add-Member -MemberType NoteProperty -Name "FilePath" -Value $inFileFolder -force
 			$row | Add-Member -MemberType NoteProperty -Name "FilePath" -Value $filefolderNoSlash -force  
 			$row | Add-Member -MemberType NoteProperty -Name "CreateSchema" -Value $CreateSchemaFlag -force
 			$row | Add-Member -MemberType NoteProperty -Name "ObjectType" -Value $objectType -force
@@ -405,12 +404,12 @@ foreach ($dbName in $dbNames)
 			$row | Add-Member -MemberType NoteProperty -Name "DropTruncateIfExists" -Value $DropTruncateIfExistsFlag -force
 			$row | Add-Member -MemberType NoteProperty -Name "Variables" -Value $Variables -force
 			$row | Add-Member -MemberType NoteProperty -Name "FileName" -Value 	$fileName  -force
-			Export-Csv -InputObject $row -Path $outCsvFileName -NoTypeInformation -Append -Force 
-		
-			
-			#$OneConfigFileChoice
-			#if ($oneConfigFile -eq "YES")
-			if ($OneConfigFileChoice -eq "YES")
+
+			if ($OneConfigFile -eq "NO")
+			{
+				Export-Csv -InputObject $row -Path $outCsvFileName -NoTypeInformation -Append -Force 
+			}
+			elseif ($OneConfigFile -eq "YES")
 		 	{
 				if ( ($key -eq "SqldwTables") -or ($key -eq "SqldwViews") -or ($key -eq "SqldwSPs") )
 				{
@@ -433,8 +432,11 @@ foreach ($dbName in $dbNames)
 					Write-Output ("Error: please look at key " + $key )
 				}					
 			}
+			else {
+				Write-Output " Check the value of the OneConfigFile. Expected Value: Yes or No. Not expected value : " $OneConfigFile
+			}
 		}
-		if ([IO.File]::Exists($outCsvFileName)) 
+		if (($OneConfigFile -eq "NO") -and [IO.File]::Exists($outCsvFileName)) 
 		{
 			Write-Output "**************************************************************************************************************"
 			Write-Output ("   Completed writing to outCsvFileName: " + $outCsvFileName)
@@ -447,7 +449,7 @@ foreach ($dbName in $dbNames)
 
 foreach ($key in $oneConfigFilePaths.Keys)
 {
-	if ([IO.File]::Exists($oneConfigFilePaths[$key])) 
+	if (($OneConfigFile -eq "YES") -and [IO.File]::Exists($oneConfigFilePaths[$key])) 
 	{
 		Write-Output " -------------------------------------------------------------------------------------------------------------------- "
 		Write-Output ("        Completed writing to combined config File: " + $oneConfigFilePaths[$key] )

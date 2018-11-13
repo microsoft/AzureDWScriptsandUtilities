@@ -1,20 +1,21 @@
 Name,Value,
-OneConfigFileChoice,Yes,"If Yes, All DBs are combined. "
-GeneratedConfigFileFolder,C:\APS2SQLDW\6_DeployScriptsToSqldw\,
-OneApsExportConfigFileName,OneApsExportConfigFile_Generated.csv,ALL DBs
-OneSqldwObjectsConfigFileName,OneSqldwObjectsConfigFile_Generated.csv,ALL DBs
-OneSqldwImportConfigFileName,OneSqldwImportConfigFile_Generated.csv,ALL DBs
-OneSqldwExtTablesConfigFileName,OneSqldwExtTablesConfigFile_Generated.csv,ALL DBs
+OneConfigFile,No,"Yes/No. If "" Yes"", All DBs are combined. If ""No"", each DB will have its own files (one for each type)"
+GeneratedConfigFileFolder,C:\APS2SQLDW\6_DeployScriptsToSqldw\,Where generated config files will reside
+OneApsExportConfigFileName,One_ApsExportConfigFile_Generated.csv,One file for this type for ALL DBs.
+OneSqldwObjectsConfigFileName,One_SqldwObjectsConfigFile_Generated.csv,One file for this type for ALL DBs.
+OneSqldwImportConfigFileName,One_SqldwImportConfigFile_Generated.csv,One file for this type for ALL DBs.
+OneSqldwExtTablesConfigFileName,One_SqldwExtTablesConfigFile_Generated.csv,One file for this type for ALL DBs.
 ActiveFlag,1,
-ApsServerName,"""APS, 17001"" ",
-SqldwServerName,AzureSQLDW_ServrName.database.windows.net,
-SqldwDatabaseName,yourSQLDW001,
-ApsExportScriptsFolder,C:\APS2SQLDW\Output\4_CreateAPSExportScriptSQLDWImportScript\ExportAPS\,
-SqldwImportScriptsFolder,C:\APS2SQLDW\Output\4_CreateAPSExportScriptSQLDWImportScript\ImportSQLDW\,
-SqldwObjectScriptsFolder,C:\APS2SQLDW\Output\3_ChangeSchemas\,
-SchemaFileFullPath,C:\APS2SQLDW\3_ChangeSchemas\schemas.csv,
-SqldwExternalTablesFolder,C:\APS2SQLDW\Output\5_CreateExternalTablesSQLDW\,
+ApsServerName,"""APS, 17001"" ",Your APS server name and IP address
+SqldwServerName,AzureSQLDW_ServrName.database.windows.net,Your Azure SQLDW SQL Server name
+SqldwDatabaseName,yourSQLDW001,Your Azure SQLDW Database name
+ApsExportScriptsFolder,C:\APS2SQLDW\Output\4_CreateAPSExportScriptSQLDWImportScript\ExportAPS\,"Where the export scripts reside, and to be used for deployment."
+SqldwImportScriptsFolder,C:\APS2SQLDW\Output\4_CreateAPSExportScriptSQLDWImportScript\ImportSQLDW\,"Where the import scripts reside, and to be used for deployment."
+SqldwObjectScriptsFolder,C:\APS2SQLDW\Output\3_ChangeSchemas\,"Where the Azure SQLDW meta data SQL files reside (Tables, Views, and Stored Procedures, each type is under its own subdirectory"
+SchemaFileFullPath,C:\APS2SQLDW\3_ChangeSchemas\schemas.csv,Need this schema mapping file as well for information
+SqldwExternalTablesFolder,C:\APS2SQLDW\Output\5_CreateExternalTablesSQLDW\,Where the T-SQL Scripts reside for creating external tables inside Azure SQLDW
 CreateSchemaFlag,,
 SchemaAuth,,
-DropTruncateIfExistsFlag,NO,
-OutputObjectsFolder,C:\APS2SQLDW\Output\6_DeployScriptsToSqldw\,
+DropTruncateIfExistsFlag,NO,"Sample Values: ""DROP, TRUNCATE, NO"". See step 6 readme.md (GitHub) for more details. "
+OutputObjectsFolder,C:\APS2SQLDW\Output\6_DeployScriptsToSqldw\,Where the output files will be created when executing step 6 main program (PowerShell)
+Variables,,"Sample: ""@Location|TestLoc {Location}|TestLoc @Var1|TestLoc;@Var2 |Datasource"". See step 6 readme.md (GitHub) for more details. "
