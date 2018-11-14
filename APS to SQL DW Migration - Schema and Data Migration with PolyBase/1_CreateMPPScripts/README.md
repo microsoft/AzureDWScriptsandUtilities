@@ -37,9 +37,9 @@ $cmd = 'C:\PDWScripter\dwScripter.exe -S:"' + $ServerName + '" -D:' + $DatabaseN
 Create the configuration driver CSV file by referring the definitions below. Sample CSV configuration files are provided to aid this preparation task. Initial configuration files can also be automatically generated using the PowerShell program for PreAssessment. 
 
 | Parameter           | Purpose                              |      Value (Sample)     |
-| --------------------| -------------------------------------|-------------------------| 
+| --------------------| -------------------------------------|-------------------------|
 | Active              | 1 – Run line, 0 – Skip line.         | 0 or 1                  |
-| ServerName          | Name of the SQLDW/APS(PDW).          | Sqlsvr.database.windows.net  or “10.111.###.333,17001”                                                                 |
+| ServerName          | Name of the SQLDW/APS(PDW).          | Sqlsvr.database.windows.net  or “10.111.###.333”                                                                 |
 | DatabaseName        | Name of the DB to connect to.        | YourDatabaseName        |
 | SchemaName        | Schema name of the object.            | dbo, DBO, HR, Sales     |
 | WorkMode            | DDL – script the DDL for the tables. DML – script the SP/Views.                                | DDL or DML          |
