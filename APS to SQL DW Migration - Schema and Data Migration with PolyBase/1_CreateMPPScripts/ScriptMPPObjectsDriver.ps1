@@ -87,7 +87,7 @@ $ScriptPath = Split-Path $MyInvocation.MyCommand.Path -Parent
 
 foreach ($f in Get-ChildItem -path $ConfigFilePath  -Filter *.csv)
 {
-	Write-Host "File Name: " $f.FullName.ToString()	
+	#Write-Host "File Name: " $f.FullName.ToString()	
 
 	$ObjectsToScriptDriverFile = $f.FullName.ToString()	
 
@@ -125,7 +125,7 @@ foreach ($f in Get-ChildItem -path $ConfigFilePath  -Filter *.csv)
 				$ObjectName = 'dbo' + $ObjectName
 			}
 			
-			Write-Host Processing Export File: $ExportFileName 
+			#Write-Host Processing Export File: $ExportFileName 
 			ScriptObjects $ServerName $UseIntegrated $UserName	$Password $DatabaseName $WorkMode $OutpputFolderPathFileName $Mode $ObjectName $ObjectToScript
 			
 		}
