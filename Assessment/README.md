@@ -8,7 +8,7 @@
 Assessment tool is used to gather information on the Source System DBs to better enable an
 accurate estimate for the migration.
 
-![Assessment Summary](..//Images/0a_summary.jpg)
+![Assessment Summary](..//Images/0a_Summary.jpg)
 
 
 
