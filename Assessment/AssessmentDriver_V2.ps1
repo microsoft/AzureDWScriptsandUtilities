@@ -367,8 +367,7 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 	# Set default JSON config file. This file will have all configurations needed. One file to have all info. 
 	# User can overrite the file full path when prompted. 
 	$ScriptPath = Split-Path $MyInvocation.MyCommand.Path -Parent
-	#$PreAssessmentDriverFile_Config_Default = "$ScriptPath\PreAssessmentDriverFile.json"
-	$PreAssessmentDriverFile_Config_Default = "C:\APS2SQLDW\0_PreAssessment\AssessmentDriverFile.json"
+	$PreAssessmentDriverFile_Config_Default = "$ScriptPath\AssessmentDriverFile.json"
 
 	$PreAssessmentDriverFile_Config = Read-Host -prompt "Enter the name of the PreAssessment JSON Config File. Default on Enter: [$PreAssessmentDriverFile_Config_Default]"
 	if($PreAssessmentDriverFile_Config -eq "" -or $PreAssessmentDriverFile_Config -eq $null)
