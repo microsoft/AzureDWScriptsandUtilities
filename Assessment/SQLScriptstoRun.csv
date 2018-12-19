@@ -1,5 +1,5 @@
 Active,SourceSystem,RunFor,DB,CommandType,VersionFrom,VersionTo,ExportFileName,SQLStatement
-1,APS,DB,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 10.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),ObjectCount,"select db_name() as DBName, s.name as SchemaName ,  o.type_desc, count(1) as ObjectCount, db_name() + '_' + s.name as row_key
+1,APS,DB,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),ObjectCount,"select db_name() as DBName, s.name as SchemaName ,  o.type_desc, count(1) as ObjectCount, db_name() + '_' + s.name as row_key
 from sys.objects o
 inner join sys.schemas s 
 ON o.schema_id = s.schema_id
@@ -13,7 +13,7 @@ inner join sys.stats  ss
 ON o.object_id = ss.object_id
 group by  s.name
 ORDER BY db_name(), s.name;"
-1,APS,DB,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 10.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),TableMetadata,"SELECT distinct db_name() as DBName, s.name as SchemaName, t.name as TableName, tdp.distribution_policy_desc,
+1,APS,DB,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),TableMetadata,"SELECT distinct db_name() as DBName, s.name as SchemaName, t.name as TableName, tdp.distribution_policy_desc,
   CASE WHEN   cdp.distribution_ordinal=1 then c.name ELSE NULL END as DistCol,
   i.type_desc as StorageType,
   CASE WHEN count(p.rows)>1 THEN 'YES' ELSE 'NO' END as IsPartitioned,
@@ -38,11 +38,11 @@ WHERE (tdp.distribution_policy_desc<>'HASH' or  cdp.distribution_ordinal=1) AND
  i.index_ID<2
 GROUP BY s.name, t.name, tdp.distribution_policy_desc, cdp.distribution_ordinal, c.name, i.type_desc
 ORDER BY db_name(),S.name, t.name"
-1,APS,Server,None,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 10.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Version,Select @@version as 'Version'
-1,APS,Table,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 10.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Tables,Select 1
-1,APS,Table,ALL,DBCC,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 10.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),ShowSpaceUsed,PDW_ShowSpaceUsed
-1,APS,Server,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 10.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Distributions,"select count(distinct pdw_node_id) Nodes, count(distribution_id) Distributions from sys.pdw_distributions"
-1,APS,DB,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 10.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),TablesToScript,"Declare @ServerName varchar(50)= '10.222.333.XXX'
+1,APS,Server,None,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Version,Select @@version as 'Version'
+1,APS,Table,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Tables,Select 1
+1,APS,Table,ALL,DBCC,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),ShowSpaceUsed,PDW_ShowSpaceUsed
+1,APS,Server,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Distributions,"select count(distinct pdw_node_id) Nodes, count(distribution_id) Distributions from sys.pdw_distributions"
+1,APS,DB,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),TablesToScript,"Declare @ServerName varchar(50)= '10.222.333.XXX'
 Declare @OutputDir varchar(50)= 'C:\APS2SQLDW\Output\1_CreateMPPScripts\' 
 
 Select '1' as Active, @ServerName as ServerName, 
@@ -57,7 +57,7 @@ inner join sys.databases d
 on d.name = db_name()  and t.type_desc = 'USER_TABLE' 
 and t.temporal_type_desc ='NON_TEMPORAL_TABLE' 
 and t.object_id not in (select object_id from sys.external_tables)"
-1,APS,DB,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 10.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),ViewsToScript,"Declare @ServerName varchar(50)= '10.222.333.XXX'
+1,APS,DB,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),ViewsToScript,"Declare @ServerName varchar(50)= '10.222.333.XXX'
 Declare @OutputDir varchar(50)= 'C:\APS2SQLDW\Output\1_CreateMPPScripts\' 
 
 Select '1' as Active, @ServerName as ServerName, 
@@ -70,7 +70,7 @@ inner join sys.schemas s
 on v.schema_id = s.schema_id
 inner join sys.databases d
 on d.name = db_name() and v.type_desc = 'VIEW'"
-1,APS,DB,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 10.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),SPsToScript,"Declare @ServerName varchar(50)= '10.222.333.XXX' 
+1,APS,DB,ALL,SQL,Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: ),SPsToScript,"Declare @ServerName varchar(50)= '10.222.333.XXX' 
 Declare @OutputDir varchar(50)= 'C:\APS2SQLDW\Output\1_CreateMPPScripts\' 
 
 Select '1' as Active, @ServerName as ServerName, 
@@ -83,7 +83,7 @@ inner join sys.schemas s
 on o.schema_id = s.schema_id
 inner join sys.databases d
 on d.name = db_name()  and o.type_desc = 'SQL_STORED_PROCEDURE'"
-1,Netezza,Server,ALL,SQL,Release 5.0.0.0 [Build 0],Release 7.2.0.0 [Build 46322],ObjectCount,"select
+1,Netezza,Server,ALL,SQL,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],ObjectCount,"select
 	objdata.dbname DBName
 	,objdata.owner Schema
 	,objdata.objtype Object_Type
@@ -108,32 +108,7 @@ order by
 	objdata.dbname,
 	objdata.owner,
 	objdata.objtype;"
-1,Netezza,Server,ALL,SQL,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],ObjectCount,"select
-	objdata.dbname DBName
-	,objdata.owner Schema
-	,objdata.objtype Object_Type
-	,count(objdata.objtype) Object_Count
-from
-	admin._v_sys_database as db
-	left join
-		admin._v_sys_object_data as objdata
-		on db.objname = objdata.dbname
-	left join
-		admin._v_sys_object_storage_size as objsize
-		on objdata.objid = objsize.tblid
-group by
-	objdata.dbname,
-	objdata.owner,
-	objdata.objtype
-having
-	objdata.objtype in ('TABLE', 'EXTERNAL TABLE', 'PROCEDURE', 'FUNCTION', 'AGGREGATE', 'LIBRARY', 'MATERIALIZED VIEW', 'MVIEW_STORE', 'SEQUENCE', 'VIEW', 'SYNONYM', 'CONSTRAINT')
-	AND
-	objdata.dbname not in ('SYSTEM')
-order by
-	objdata.dbname,
-	objdata.owner,
-	objdata.objtype;"
-1,Netezza,Server,ALL,SQL,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],DBSize,"select
+1,Netezza,Server,ALL,SQL,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],DBSize,"select
 	objdata.dbname ,
 	sum(objsize.used_bytes) / 1024 / 1024 / 1024 / 1024 As TB,
 	sum(objsize.used_bytes) / 1024 / 1024 / 1024  as GB,
@@ -163,7 +138,7 @@ group by
 order by
 	objdata.dbname,	
 	sum(objsize.used_bytes) desc;"
-1,Netezza,Server,ALL,SQL,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],TableSize,"select
+1,Netezza,Server,ALL,SQL,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],TableSize,"select
 	objdata.dbname ,
 	objdata.schema ,
 	objdata.objname ,
@@ -185,7 +160,7 @@ order by
 	objdata.dbname,
 	objdata.schema,
 	sum(objsize.used_bytes) desc;"
-1,Netezza,DB,ALL,SQL,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],Procedure,"select
+1,Netezza,DB,ALL,SQL,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],Procedure,"select
 	p.database ,
 	p.schema ,
 	'PROCEDURE' ""ObjectType"",
@@ -194,7 +169,7 @@ order by
 	p.returns  ,
 	length(p.proceduresource) ""proceduresource_Length""
 from admin._v_procedure as p;"
-1,Netezza,DB,ALL,SQL,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],Library,"select
+1,Netezza,DB,ALL,SQL,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],Library,"select
 	l.schema ,
 	'LIBRARY' ""ObjectType"",
 	l.library ,
@@ -203,7 +178,7 @@ from admin._v_procedure as p;"
 	coalesce(l.description, 'No Description') description
 from
 	admin._v_library as l;"
-1,Netezza,DB,ALL,SQL,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],Aggregate,"select
+1,Netezza,DB,ALL,SQL,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],Aggregate,"select
 	a.database ,
 	a.schema ,
 	'AGGREGATE' ""ObjectType"",
@@ -216,7 +191,7 @@ from
 	admin._v_aggregate as a
 where
 	database <> 'SYSTEM';"
-1,Netezza,DB,ALL,SQL,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],Function,"select
+1,Netezza,DB,ALL,SQL,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],Function,"select
 	f.database Database,
 	f.schema Schame,
 	'FUNCTION' ObjectType,
@@ -230,7 +205,7 @@ from
 	admin._v_function as f
 where
 	database <> 'SYSTEM';"
-1,Netezza,DB,ALL,SQL,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],TableMetadata,"SELECT tab.database DBName , tab.Owner SchemaName, tab.tablename TableName
+1,Netezza,DB,ALL,SQL,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],TableMetadata,"SELECT tab.database DBName , tab.Owner SchemaName, tab.tablename TableName
  		,case when map.attname is null then 'RANDOM' else 'HASH' end distribution_policy_desc
 		,case when max(org.attname) is null then '0' else '1' end ""is_Partitioned(Organized)""
 		--COALESCE(map.attname,'RANDOM') AS distribution_key
@@ -242,13 +217,13 @@ where
  WHERE UPPER(objtype) IN ('TABLE','SECURE TABLE') 
  group by tab.database, tab.Owner, tab.tablename , distribution_policy_desc
  ORDER BY tab.database, tab.Owner, tab.tablename"
-1,Netezza,DB,ALL,SQL,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],Sequence,"select s.database ,
+1,Netezza,DB,ALL,SQL,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],Sequence,"select s.database ,
 		s.schema , 
 		s.Seqname,
 		'SEQUENCE' ""ObjectType""
 from admin._v_sequence as S where s.DATABASE NOT IN ('SYSTEM') ;"
-1,Netezza,Server,ALL,SQL,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],SystemInfo,"select SYSTEM_STATE, SYSTEM_SOFTWARE_VERSION, SYSTEM_VERSION_FULL, SYSTEM_CAT_VERSION from _v_system_info"
-1,AZUREDW,DB,ALL,SQL,Microsoft SQL Azure (RTM) - 11.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Microsoft SQL Azure (RTM) - 13.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,ObjectCount,"select db_name() as DBName, s.name as SchemaName ,  o.type_desc, count(1) as ObjectCount, db_name() + '_' + s.name as row_key
+1,Netezza,Server,ALL,SQL,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],SystemInfo,"select SYSTEM_STATE, SYSTEM_SOFTWARE_VERSION, SYSTEM_VERSION_FULL, SYSTEM_CAT_VERSION from _v_system_info"
+1,AZUREDW,DB,ALL,SQL,Microsoft SQL Azure (RTM) - 1.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,ObjectCount,"select db_name() as DBName, s.name as SchemaName ,  o.type_desc, count(1) as ObjectCount, db_name() + '_' + s.name as row_key
 from sys.objects o
 inner join sys.schemas s 
 ON o.schema_id = s.schema_id
@@ -262,4 +237,4 @@ inner join sys.stats  ss
 ON o.object_id = ss.object_id
 group by  s.name
 ORDER BY db_name(), s.name;"
-1,Netezza,DB,ALL,SCRIPTDB,Release 7.2.1.0 [Build 46322],Release 7.2.1.0 [Build 46325],ScriptNetezza,"select OBJNAME,OWNER,OBJTYPE,SCHEMA,CURRENT_CATALOG from _v_objects"
+1,Netezza,DB,ALL,SCRIPTDB,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],ScriptNetezza,"select OBJNAME,OWNER,OBJTYPE,SCHEMA,CURRENT_CATALOG from _v_objects"
