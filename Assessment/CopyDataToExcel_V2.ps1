@@ -24,12 +24,21 @@ function Display-LogMsg($LogMsg) {
 $DeleteFile = 'N'
 $VerboseLogging = "True"
 
-$defaultPreAssessmentOutputPath = "C:\APS2SQLDW\Output\0_PreAssessment"
+#$defaultPreAssessmentOutputPath = "C:\APS2SQLDW\Output\0_Assessment\APS"
+$defaultPreAssessmentOutputPath = "C:\SQLDW_Migration\Output\0_Assessment"
 $PreAssessmentOutputPath = Read-Host -prompt "Enter the Path to the Pre-Assessment output files or Press 'Enter' to accept default: [$($defaultPreAssessmentOutputPath)]"
 if($PreAssessmentOutputPath -eq "" -or $PreAssessmentOutputPath -eq $null) 
 {
   $PreAssessmentOutputPath = $defaultPreAssessmentOutputPath
 }
+
+$defaultEstimationConfigPath = "C:\SQLDW_Migration\0_Assessment"
+$EstimationConfigPath = Read-Host -prompt "Enter the Path where estimation framework files are stored or Press 'Enter' to accept default: [$($defaultEstimationConfigPath)]"
+if($EstimationConfigPath -eq "" -or $EstimationConfigPath -eq $null) 
+{
+  $EstimationConfigPath = $defaultEstimationConfigPath
+}
+
 
 $defaultExcelFileName = "PreAssessment.xlsx"
 $ExcelFileName = Read-Host -prompt "Enter the name of the PreAssessment Output file or Press 'Enter' to accept default: [$($defaultExcelFileName )]"
@@ -39,7 +48,7 @@ if($ExcelFileName -eq "" -or $ExcelFileName -eq $null)
 }
 
 # This is the estimation file that to be used to generate an initial estimation on a few items 
-$defaultEstCodeAndDataFileName = "C:\APS2SQLDW\0_PreAssessment\Estimation_Code_And_Data.xlsx"
+$defaultEstCodeAndDataFileName = $EstimationConfigPath + "\Estimation_Code_And_Data.xlsx"
 $EstCodeAndDataFile = Read-Host -prompt "Enter the full path of the Estimation Template or press 'Enter' to accept default: [($defaultEstCodeAndDataFileName )]"
 if($EstCodeAndDataFile -eq "" -or $EstCodeAndDataFile -eq $null)
 {
@@ -48,7 +57,7 @@ if($EstCodeAndDataFile -eq "" -or $EstCodeAndDataFile -eq $null)
 
 
 # This is the estimation framework that to be used to generate an initial estimation for an migration project
-$defaultFrameworkFileName = "C:\APS2SQLDW\0_PreAssessment\Estimation_Framework.xlsx"
+$defaultFrameworkFileName = $EstimationConfigPath + "\Estimation_Framework.xlsx"
 $FrameworkFile = Read-Host -prompt "Enter the full path of the Estimation Framework or press 'Enter' to accept default: [($defaultFrameworkFileName )]"
 if($FrameworkFile -eq "" -or $FrameworkFile -eq $null)
 {
