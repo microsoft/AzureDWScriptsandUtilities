@@ -3,10 +3,10 @@
 	"#Netezza-DatabaseAlt":"SYSTEM",
 	"General_Config":
 		[
-			{"PreAssessmentDriverFile":"C:\\TEMP\\SQLScriptstoRun.csv",
-			"PreAssessmentOutputPath":"C:\\Temp\\Netezza\\Pre-Assessment",
-			"ServerName":"192.xxx.xxx.xxx",
-			"SourceSystem":"NETEZZA",
+			{"PreAssessmentDriverFile":"C:\\SQLDW_Migration\\0_Assessment\\SQLScriptstoRun.csv",
+			"PreAssessmentOutputPath":"C:\\SQLDW_Migration\\Output\\0_Assessment",
+			"ServerName":"10.XXX.XXX.XXX",
+			"SourceSystem":"APS",
 			"QueryTimeout":"600",
 			"ConnectionTimeout":"300"}
 		],
