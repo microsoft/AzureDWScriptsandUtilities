@@ -33,7 +33,6 @@ function ScriptObjects($ServerName
 
 	$cmd = $cmd + ' -W:' + $WorkMode + ' -O:' + $OutputFolderPath + ' -F:' + $ObjectName + ' -M:' + $Mode + ' -Fo:Table '
 
-	Write-Host $cmd
 	Invoke-Expression $cmd
 
 }
