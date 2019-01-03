@@ -285,6 +285,7 @@ Function WriteShowSpaceUsedToCSV($FileName, $Query, $Variables, $ServerName, $Da
 		Display-LogMsg "Success for Query: DB: ($Database) Query: $Query "
 	}
 	else {
+
 		# DBCC PDW_SHOWSPACEUSED Fails for Certain Tables. 
 		Display-ErrorMsg "    Did Not Succeed for Query: DB ($Database) Query: $Query "
 	}
@@ -363,7 +364,7 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 	$VerboseLogging = "True"
 	$Version = ""
 
-	Display-LogMsg "Starting pre-assesement tool"		
+	Display-LogMsg "Starting the assesement tool"		
 	# Set default JSON config file. This file will have all configurations needed. One file to have all info. 
 	# User can overrite the file full path when prompted. 
 	$ScriptPath = Split-Path $MyInvocation.MyCommand.Path -Parent
@@ -385,7 +386,6 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 		$PreAssessmentDriverFile = ($v | Select-Object PreAssessmentDriverFile).PreAssessmentDriverFile
 		$PreAssessmentOutputPath = ($v | Select-Object PreAssessmentOutputPath).PreAssessmentOutputPath
 		$ServerName = ($v | Select-Object ServerName).ServerName
-		#$PreAssessmentConfigFileLoc = ($v | Select-Object PreAssessmentConfigFileLoc).PreAssessmentConfigFileLoc
 		$QueryTimeout = ($v | Select-Object QueryTimeout).QueryTimeout
 		$ConnectionTimeout = ($v | Select-Object ConnectionTimeout).ConnectionTimeout
 	}
@@ -445,6 +445,7 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 		if(($UserName -eq "") -or ($UserName -eq $null)) 
 		{
 			$UserName = "sqladmin"
+			Display-LogMsg ("User sqladmin is used")
 		}
 		$Password = GetPassword
 		if(($Password -eq "") -or ($Password -eq $null)) 
@@ -547,13 +548,15 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 							{
 								#Display-LogMsg "$DBName $CommandType $SourceSystem"
 								$Variables = "@DBName:$DBName"
+	
 								WriteQueryToSchema -Filename $ObjFileName -Variables $Variables -DBName $DBName -FirstDBLoop $FirstDBLoop -SchemaExportFolder $SchemaExportFolder
 								$FirstDBLoop = $False
 							}
 							else
 							{
 								#Add Variable Statement
-							$Variables = "@DBName:$DBName"
+							#$Variables = "@DBName:$DBName"
+							$Variables = "@DBName:$DBName|@SQLServerName:$ServerName"
 							WriteQueryToCSV $FileName $SQLStatement $Variables $ServerName $DBName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
 							}
 						}
