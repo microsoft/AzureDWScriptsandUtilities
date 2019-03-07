@@ -5,8 +5,8 @@
 		[
 			{"PreAssessmentDriverFile":"C:\\SQLDW_Migration\\0_Assessment\\SQLScriptstoRun.csv",
 			"PreAssessmentOutputPath":"C:\\SQLDW_Migration\\Output\\0_Assessment",
-			"ServerName":"10.XXX.XXX.105",
-			"SourceSystem":"APS",
+			"ServerName":"192.*.*.101",
+			"SourceSystem":"AZUREDW",
 			"QueryTimeout":"600",
 			"ConnectionTimeout":"300"}
 		],

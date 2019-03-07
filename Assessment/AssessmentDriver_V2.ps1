@@ -590,10 +590,19 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 
 										# Need to figure out how this will work later 
 										#$ExternalTable = $row["Is_external"]								
-										#if ($ExternalTable -eq $false)
-										#{
-										#}
-										WriteShowSpaceUsedToCSV $FileName $SQLStatement2 $Variables $ServerName $DBName $SchemaName $TableName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
+										if ($SourceSystem -eq "AZUREDW")
+										{
+											$ExternalTable = $row["Is_external"]
+										}
+										else
+										{
+											$ExternalTable = $false
+										}
+
+										if($ExternalTable -eq $false)
+										{
+											WriteShowSpaceUsedToCSV $FileName $SQLStatement2 $Variables $ServerName $DBName $SchemaName $TableName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
+										}
 									}	
 								}
 							}							
