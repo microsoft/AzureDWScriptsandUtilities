@@ -205,6 +205,12 @@ Function WriteQueryToCSV($FileName, $Query, $Variables, $ServerName, $Database, 
 			$ds.Tables[$i] | export-csv "$FileName" -notypeinformation -Append
 		}
 	}
+	else 
+	{
+		$Errmsg =  "Error Executing SQL Statement: " + $ReturnValues.Get_Item("Msg")
+		Display-ErrorMsg -ImportError $Errmsg
+	}
+	
 }
 
 Function WriteShowSpaceUsedToCSV($FileName, $Query, $Variables, $ServerName, $Database, $SchemaNAme, $TableName, $Username, $Password, $ConnectionType, $QueryTimeout, $ConnectionTimeout, $SourceSystem, $Port)

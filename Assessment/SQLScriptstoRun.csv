@@ -263,9 +263,7 @@ WHERE (tdp.distribution_policy_desc<>'HASH' or  cdp.distribution_ordinal=1) AND
 GROUP BY s.name, t.name, tdp.distribution_policy_desc, cdp.distribution_ordinal, c.name, i.type_desc
 ORDER BY db_name(),S.name, t.name"
 1,AZUREDW,Server,None,SQL,Microsoft SQL Azure (RTM) - 1.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Version,Select @@version as 'Version'
-0,AZUREDW,Table,ALL,SQL,Microsoft SQL Azure (RTM) - 1.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Tables,Select 1
 1,AZUREDW,Table,ALL,DBCC,Microsoft SQL Azure (RTM) - 1.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,ShowSpaceUsed,PDW_ShowSpaceUsed
-0,AZUREDW,Server,ALL,SQL,Microsoft SQL Azure (RTM) - 1.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Distributions,"select count(distinct pdw_node_id) Nodes, count(distribution_id) Distributions from sys.pdw_distributions"
 1,Netezza,DB,ALL,SCRIPTDB,Release 1.2.1.0 [Build 46322],Release 9.2.1.0 [Build 46325],ScriptNetezza,"select OBJNAME,OWNER,OBJTYPE,SCHEMA,CURRENT_CATALOG from _v_objects"
 1,AZUREDW,DB,ALL,SQL,Microsoft SQL Azure (RTM) - 1.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,CCI_Index_Health,"select schema_name(schema_id) [schema_name], t.name, 
 	Partition_number, state_description, total_rows, 
@@ -335,3 +333,15 @@ FROM
         ON  tb.[schema_id] = sm.[schema_id]
 WHERE
     st.[user_created] = 1;"
+1,AZUREDW,DB,ALL,SQL,Microsoft SQL Azure (RTM) - 1.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Exec_Requests,"SELECT
+    *
+FROM
+     sys.dm_pdw_exec_requests;"
+1,AZUREDW,DB,ALL,SQL,Microsoft SQL Azure (RTM) - 1.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Exec_Request_Steps,"SELECT
+    *
+FROM
+     sys.dm_pdw_request_steps;"
+1,AZUREDW,DB,ALL,SQL,Microsoft SQL Azure (RTM) - 1.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation,DMS_Workers,"SELECT
+    *
+FROM
+     sys.dm_pdw_dms_workers;"
