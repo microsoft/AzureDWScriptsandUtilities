@@ -101,7 +101,7 @@ group by
 	objdata.owner,
 	objdata.objtype
 having
-	objdata.objtype in ('TABLE', 'EXTERNAL TABLE', 'PROCEDURE', 'FUNCTION', 'AGGREGATE', 'LIBRARY', 'MATERIALIZED VIEW', 'MVIEW_STORE', 'SEQUENCE', 'VIEW', 'SYNONYM', 'CONSTRAINT')
+	UPPER(objdata.objtype) in ('TABLE', 'EXTERNAL TABLE', 'PROCEDURE', 'FUNCTION', 'AGGREGATE', 'LIBRARY', 'MATERIALIZED VIEW', 'MVIEW_STORE', 'SEQUENCE', 'VIEW', 'SYNONYM', 'CONSTRAINT')
 	AND
 	objdata.dbname not in ('SYSTEM')
 order by
