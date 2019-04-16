@@ -284,10 +284,13 @@ ForEach ($S in $csvFile )
 		$DatabaseName = $S.DatabaseName
 		$FilePath = $S.FilePath
 		$FileName = $S.FileName
-		$DropTruncateIfExists = $S.DropTruncateIfExists
+		$DropTruncateIfExists = $S.DropTruncateIfExists.TOUpper()
 		$SchemaName = $S.SchemaName
 		$ObjectName = $S.ObjectName
-        $ObjectType = $S.ObjectType
+		$ObjectType = $S.ObjectType
+		$CreateSchema = $S.CreateSchema
+        $SchemaAuth = $S.SchemaAuth
+		$Variables = $S.Variables
 		
         $EndDate=(Get-Date)
         $Timespan = (New-TimeSpan -Start $StartDate -End $EndDate)
