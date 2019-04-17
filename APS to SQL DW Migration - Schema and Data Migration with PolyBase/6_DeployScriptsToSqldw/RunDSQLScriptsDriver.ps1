@@ -295,6 +295,14 @@ ForEach ($S in $csvFile )
         $EndDate=(Get-Date)
         $Timespan = (New-TimeSpan -Start $StartDate -End $EndDate)
     	$DurationSec = ($Timespan.seconds + ($Timespan.Minutes * 60) + ($Timespan.Hours * 60 * 60))
+		if($Active -eq 2)
+		{
+			$Status = 'Status = ' + $Active + ' Process skipped.'
+		}
+		else 
+		{
+			$Status = 'Status = ' + $Active + ' Process did not run.'	
+		}
 		$Status = 'Status = ' + $Active + ' Process did not run.'
 		$HeaderRow = $Active,$ServerName,$DatabaseName,$FilePath,$CreateSchema,$SchemaAuth,$ObjectType,$ObjectName,$FileName,$DropTruncateIfExists,$SchemaName,$Variables,$Status,$DurationSec
 		$HeaderRow  -join ","  >> $StatusLogFile
