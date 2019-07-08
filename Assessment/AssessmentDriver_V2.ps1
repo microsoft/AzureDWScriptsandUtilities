@@ -102,7 +102,7 @@ Function GetListQuery ($ListQueries, $Version, $SourceSystem)
 	{
 		if(($v | Select-Object System).System -eq $SourceSystem)
 		{
-			if($Version -ge ($v | Select-Object VersionFrom).VersionFrom -and $Version -le ($v | Select-Object VersionTo).VersionTo)
+			if($Version -ge [System.version]($v | Select-Object VersionFrom).VersionFrom -and $Version -le ($v | Select-Object VersionTo).VersionTo)
 			{
 				Display-LogMsg "Source System and Version: " $SourceSystem " Version: " $Version 
 				$ListQuery = ($v | Select-Object Query).Query 
@@ -343,7 +343,8 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 		$ds = $ReturnValues.Get_Item("DataSet")
 		foreach ($row in $ds.Tables[0]) 
 		{
-			$Version =  $row["Version"]
+			$VersionValue =  $row["Version"] -match '(\d*\.\d*\.\d*\.\d*)'
+			$Version = $Matches[0]
 		}
 	}
 	else 
@@ -466,8 +467,8 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 	. "$ScriptPath\RunSQLStatement.ps1"
 
 
-	$Version = GetDBVersion -VersionQueries $VersionQueries -ServerName $ServerName -Port $Port -Database $DB_Default -QueryTimeout $QueryTimeout -ConnectionTimeout $ConnectionTimeOut -UserName $UserName -Password $Password -ConnectionType  $ConnectionType -SourceSystem $SourceSystem 
-
+	$VersionRaw = GetDBVersion -VersionQueries $VersionQueries -ServerName $ServerName -Port $Port -Database $DB_Default -QueryTimeout $QueryTimeout -ConnectionTimeout $ConnectionTimeOut -UserName $UserName -Password $Password -ConnectionType  $ConnectionType -SourceSystem $SourceSystem 
+	$Version = [System.version]$VersionRaw
 	<# if ($Version -eq $null -or $Version -eq "" ) {		
 		
 		#Check the version with the alternate system database

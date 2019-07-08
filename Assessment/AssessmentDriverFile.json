@@ -3,9 +3,9 @@
 	"#Netezza-DatabaseAlt":"SYSTEM",
 	"General_Config":
 		[
-			{"PreAssessmentDriverFile":"C:\\SQLDW_Migration\\0_Assessment\\SQLScriptstoRun.csv",
-			"PreAssessmentOutputPath":"C:\\SQLDW_Migration\\Output\\0_Assessment",
-			"ServerName":"192.*.*.101",
+			{"PreAssessmentDriverFile":"H:\\Documents\\POC Files\\Assessment\\SQLScriptstoRun.csv",
+			"PreAssessmentOutputPath":"C:\\POCFiles\\OneDrive - Microsoft\\Clients\\BBB\\POC Files\\Logs\\Assessment",
+			"ServerName":"bbb-nzpoc-server1.database.windows.net",
 			"SourceSystem":"AZUREDW",
 			"QueryTimeout":"600",
 			"ConnectionTimeout":"300"}
@@ -13,7 +13,7 @@
 	
 	"APS":
 		[
-			{"Database":"MASTER",
+			{"Database":"bbb-NZpoc",
 			"Port":"17001"}
 		],
 	"TERADATA":
@@ -51,8 +51,8 @@
 		[
 			{
 				"System":"Netezza",
-				"VersionFrom":"Release 5.0.0.0 [Build 0]",
-				"VersionTo": "Release 9.2.0.0 [Build 46322]",
+				"VersionFrom":"5.0.0.0",
+				"VersionTo": "9.2.0.0",
 				"Query":"select DATNAME as Name from SYSTEM.._T_DATABASE Where DATNAME NOT IN ('MASTER_DB','SYSTEM')"
 			},
 			{
@@ -63,14 +63,14 @@
 			},
 			{
 				"System":"APS",
-				"VersionFrom":"Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: )",
-				"VersionTo": "Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: )",
+				"VersionFrom":"1.0.8727.0",
+				"VersionTo": "99.0.8727.0",
 				"Query":"select name from sys.databases where name not in ('master','tempdb','stagedb', 'msdb', 'model', 'ReportServer$%');"
 			},
 			{
 				"System":"AZUREDW",
-				"VersionFrom":"Microsoft SQL Azure (RTM) - 11.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation ",
-				"VersionTo": "Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation ",
+				"VersionFrom":"1.0.2000.8",
+				"VersionTo": "12.0.2000.8",
 				"Query":"select name from sys.databases where name not in ('master','tempdb','stagedb', 'msdb', 'model', 'ReportServer$%')"
 			}
 		],
@@ -78,8 +78,8 @@
 		[
 			{
 				"System":"Netezza",
-				"VersionFrom":"Release 5.0.0.0 [Build 0]",
-				"VersionTo": "Release 9.2.0.0 [Build 46322]",
+				"VersionFrom":"5.0.0.0",
+				"VersionTo": "9.2.0.0",
 				"Query":"select * from _v_table"
 			},
 			{
@@ -90,14 +90,14 @@
 			},
 			{
 				"System":"APS",
-				"VersionFrom":"Microsoft Parallel Data Warehouse - 1.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: )",
-				"VersionTo": "Microsoft Parallel Data Warehouse - 99.0.8727.0 (X64) May 8 2018 15:51:34 Copyright (c) Microsoft Corporation Parallel Data Warehouse (64-bit) on Windows NT 6.2 <X64> (Build 9200: )",
+				"VersionFrom":"1.0.8727.0",
+				"VersionTo": "99.0.8727.0",
 				"Query":"use [@DBname];Select t.name as name, s.name as SchemaName from sys.tables t join sys.schemas as s on t.schema_id = s.schema_id and t.object_id not in (select object_id from sys.external_tables) order by t.name;"
 			},
 			{
 				"System":"AZUREDW",
-				"VersionFrom":"Microsoft SQL Azure (RTM) - 11.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation ",
-				"VersionTo": "Microsoft SQL Azure (RTM) - 99.0.2000.8   Nov  2 2018 21:17:06   Copyright (C) 2018 Microsoft Corporation ",
+				"VersionFrom":"2.0.2000.8",
+				"VersionTo": "12.0.2000.8",
 				"Query":"select t.name as name, s.name as SchemaName, t.is_external from sys.tables t join sys.schemas as s on t.schema_id = s.schema_id order by t.name;"
 			}
 		]
