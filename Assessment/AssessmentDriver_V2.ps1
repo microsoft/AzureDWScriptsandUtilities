@@ -581,7 +581,7 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 								$TableName =  $row["Name"]
 								$SchemaName =  $row["SchemaName"]
 							
-								$Variables = "@DBName:$DBName|@TableName:$TableName|@SchameName:$SchemaName"
+								$Variables = "@DBName:$DBName|@TableName:$TableName|@SchemaName:$SchemaName"
 
 								if($CommandType -eq "SQL")
 								{

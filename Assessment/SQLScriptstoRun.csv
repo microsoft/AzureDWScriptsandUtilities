@@ -345,3 +345,4 @@ FROM
     *
 FROM
      sys.dm_pdw_dms_workers;"
+1,AZUREDW,TABLE,ALL,SQL,1.0.0.0,99.0.0.0,Exec_SpaceUsedTable,"EXEC SP_SPACEUSED '@SchemaName.@TableName'"
