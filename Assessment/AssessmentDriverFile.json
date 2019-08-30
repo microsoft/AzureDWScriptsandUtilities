@@ -5,7 +5,7 @@
 		[
 			{"PreAssessmentDriverFile":"H:\\Documents\\POC Files\\Assessment\\SQLScriptstoRun.csv",
 			"PreAssessmentOutputPath":"C:\\POCFiles\\OneDrive - Microsoft\\Clients\\BBB\\POC Files\\Logs\\Assessment",
-			"ServerName":"bbb-nzpoc-server1.database.windows.net",
+			"ServerName":"DBServerName",
 			"SourceSystem":"AZUREDW",
 			"QueryTimeout":"600",
 			"ConnectionTimeout":"300"}
@@ -13,7 +13,7 @@
 	
 	"APS":
 		[
-			{"Database":"bbb-NZpoc",
+			{"Database":"Master",
 			"Port":"17001"}
 		],
 	"TERADATA":
@@ -36,7 +36,7 @@
 			},
 			{
 				"System":"Teradata",
-				"Query":""
+				"Query":"SELECT  InfoData AS Version FROM    DBC.DBCInfoV WHERE   InfoKey = 'VERSION';"
 			},
 			{
 				"System":"APS",
@@ -57,8 +57,8 @@
 			},
 			{
 				"System":"Teradata",
-				"VersionFrom":"",
-				"VersionTo": "",
+				"VersionFrom":"0.0.0.0",
+				"VersionTo": "99.99.99.99",
 				"Query":""
 			},
 			{
@@ -84,8 +84,8 @@
 			},
 			{
 				"System":"Teradata",
-				"VersionFrom":"",
-				"VersionTo": "",
+				"VersionFrom":"0.0.0.0",
+				"VersionTo": "99.99.99.99",
 				"Query":""
 			},
 			{

@@ -107,7 +107,13 @@ function RunSQLStatement
 			$conn=new-object system.data.odbc.odbcconnection
 			$cmd = new-object System.Data.Odbc.OdbcCommand
 		}	
-
+		elseif ($SourceSystemType -eq "TERADATA") 
+		{
+			$ConnectionString = "Driver=Teradata;DBCName={0};Database={1};Uid={2};Pwd={3}" -f $ServerName,$Database,$Username,$Password #$ConnectionTimeout
+			#$ConnectionString = "Server={0};Database={1};Trusted_Connection=False;Connect Timeout={0};Persist Security Info=False;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Authentication=Active Directory Integrated" -f $ServerName,$Database,$ConnectionTimeout
+			$conn=new-object system.data.odbc.odbcconnection
+			$cmd = new-object System.Data.Odbc.OdbcCommand
+		}	
 	
 		#$conn=new-object System.Data.SqlClient.SQLConnection
 		$conn.ConnectionString=$ConnectionString 
