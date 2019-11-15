@@ -83,6 +83,7 @@ inner join sys.schemas s
 on o.schema_id = s.schema_id
 inner join sys.databases d
 on d.name = db_name()  and o.type_desc = 'SQL_STORED_PROCEDURE'"
+1,APS,TABLE,ALL,SQL,1.0.0.0,99.0.0.0,Exec_SpaceUsedTable,EXEC SP_SPACEUSED '@SchemaName.@TableName'
 1,Netezza,Server,ALL,SQL,1.0.0.0,9.2.1.0,ObjectCount,"select
 	objdata.dbname DBName
 	,objdata.owner Schema
@@ -265,13 +266,21 @@ ORDER BY db_name(),S.name, t.name"
 1,AZUREDW,Server,None,SQL,1.0.0.0,99.0.0.0,Version,Select @@version as 'Version'
 1,AZUREDW,Table,ALL,DBCC,1.0.0.0,99.0.0.0,ShowSpaceUsed,PDW_ShowSpaceUsed
 1,Netezza,DB,ALL,SCRIPTDB,1.0.0.0,9.2.1.0,ScriptNetezza,"select OBJNAME,OWNER,OBJTYPE,SCHEMA,CURRENT_CATALOG from _v_objects"
-1,AZUREDW,DB,ALL,SQL,1.0.0.0,99.0.0.0,CCI_Index_Health,"select schema_name(schema_id) [schema_name], t.name, 
+1,AZUREDW,DB,ALL,SQL,1.0.0.0,99.0.0.0,CCI_Index_Health,"select schema_name(t.schema_id) [schema_name], t.name, 
 	Partition_number, state_description, total_rows, 
-	deleted_rows, size_in_bytes, pdw_node_id, distribution_id,
+	deleted_rows, size_in_bytes, pt.pdw_node_id, pt.distribution_id,
 	Case when state_description = 'COMPRESSED' and total_rows < 1048576 then 'Not Optimized' 
 	     when state_description <> 'COMPRESSED' then State_description else 'Optimized' end 
-from sys.pdw_nodes_column_store_row_groups rg 
-		join sys.tables t on rg.object_id = t.object_id"
+FROM sys.pdw_nodes_column_store_row_groups rg
+JOIN sys.pdw_nodes_tables pt
+ON rg.object_id = pt.object_id AND rg.pdw_node_id = pt.pdw_node_id AND pt.distribution_id = rg.distribution_id
+JOIN sys.pdw_table_mappings tm
+ON pt.name = tm.physical_name
+INNER JOIN sys.tables t
+ON tm.object_id = t.object_id
+INNER JOIN sys.schemas s
+ON t.schema_id = s.schema_id
+order by 1, 2"
 1,AZUREDW,DB,ALL,SQL,1.0.0.0,99.0.0.0,CCI_Index_Health_Summary,"
 SELECT
     s.name AS [Schema Name]
@@ -345,5 +354,21 @@ FROM
     *
 FROM
      sys.dm_pdw_dms_workers;"
-1,AZUREDW,TABLE,ALL,SQL,1.0.0.0,99.0.0.0,Exec_SpaceUsedTable,"EXEC SP_SPACEUSED '@SchemaName.@TableName'"
-0,AZUREDW,DB,ALL,SQL,1.0.0.0,99.0.0.0,Exec_SpaceUsedDB,"EXEC SP_SPACEUSED "
+1,AZUREDW,TABLE,ALL,SQL,1.0.0.0,99.0.0.0,Exec_SpaceUsedTable,EXEC SP_SPACEUSED '@SchemaName.@TableName'
+0,AZUREDW,DB,ALL,SQL,1.0.0.0,99.0.0.0,Exec_SpaceUsedDB,EXEC SP_SPACEUSED 
+1,AZUREDW,DB,ALL,SQL,1.0.0.0,99.0.0.0,DMS_SQL_Requests,"SELECT
+    *
+FROM
+     sys.dm_pdw_sql_requests;"
+1,AZUREDW,DB,ALL,SQL,1.0.0.0,99.0.0.0,DMS_Resource_Waits,"SELECT
+    *
+FROM
+     sys.dm_pdw_resource_waits;"
+1,AZUREDW,DB,ALL,SQL,1.0.0.0,99.0.0.0,DMS_PDW_Waits,"SELECT
+    *
+FROM
+    sys.dm_pdw_waits;"
+1,AZUREDW,DB,ALL,SQL,1.0.0.0,99.0.0.0,DMS_PDW_Wait_Stats,"SELECT
+    *
+FROM
+   sys.dm_pdw_wait_stats;"

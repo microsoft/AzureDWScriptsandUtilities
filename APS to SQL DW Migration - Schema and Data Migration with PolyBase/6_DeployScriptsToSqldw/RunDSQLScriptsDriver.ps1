@@ -199,6 +199,7 @@ ForEach ($S in $csvFile )
 {
     $StartDate=(Get-Date)
 	$Active = $S.Active
+	$RunStatement = 1
     if($Active -eq '1') 
 	{
         $ServerName = $S.ServerName
@@ -213,10 +214,7 @@ ForEach ($S in $csvFile )
         $ObjectType = $S.ObjectType
 		$Variables = $S.Variables
 		
-		if($DropTruncateIfExists -eq '' -or [string]::IsNullOrEmpty($DropTruncateIfExists))
-		{
-			$DropTruncateIfExists = 0
-		}
+		
 		
 		$ScriptToRun = $FilePath + "\" +$FileName
 		
@@ -226,16 +224,18 @@ ForEach ($S in $csvFile )
             
             $ReturnValues = RunSQLScriptFile -ServerName $ServerName -Username $UserName -Password $Password -SQLDWADIntegrated $ConnectToSQLDW -Database $DatabaseName -Query $Query #-SchemaName $SchemaName -TableName $TableName -DropIfExists $DropIfExists -StatusLogFile $StatusLogFile
 		}
-		
-		if($DropTruncateIfExists -eq 'TRUNCATE')
+		elseif($DropTruncateIfExists -eq 'TRUNCATE')
 		{
 			$Query = GetTruncateStatement -SchemaName $SchemaName -objectName $ObjectName -ObjectType $ObjectType
 
 			$ReturnValues = RunSQLScriptFile -ServerName $ServerName -Username $UserName -Password $Password -SQLDWADIntegrated $ConnectToSQLDW -Database $DatabaseName -Query $Query 
 		}
+		else#if($DropTruncateIfExists -eq '' -or [string]::IsNullOrEmpty($DropTruncateIfExists))
+		{
+			$RunStatement = 0
+		}
 
-
-        if($ReturnValues.Get_Item("Status") -eq 'Success' -or $DropTruncateIfExists -eq 0)
+        if($ReturnValues.Get_Item("Status") -eq 'Success' -or $RunStatement -eq 0)
 		{
             If($CreateSchema -eq 1) 
             {
