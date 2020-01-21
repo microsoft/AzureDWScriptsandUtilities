@@ -314,7 +314,75 @@ Function WriteQueryToSchema($FileName, $Variables, $DBName, $FirstDBLoop, $Schem
 	}
 }
 
-Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username, $Password, $ConnectionType, $QueryTimeout, $ConnectionTimeout, $SourceSystem)
+function ContinueProcess {
+		
+	if($RunFor.ToUpper() -ne "TABLE")
+	{
+		if($CommandType -eq "SCRIPTDB" -AND $SourceSystem.ToUpper() -eq 'NETEZZA')
+		{
+			#Display-LogMsg "$DBName $CommandType $SourceSystem"
+			$Variables = "@DBName:$DBName"
+
+			WriteQueryToSchema -Filename $ObjFileName -Variables $Variables -DBName $DBName -FirstDBLoop $FirstDBLoop -SchemaExportFolder $SchemaExportFolder
+			$FirstDBLoop = $False
+		}
+		else
+		{
+			#Add Variable Statement
+		#$Variables = "@DBName:$DBName"
+		$Variables = "@DBName:$DBName|@SQLServerName:$ServerName"
+		WriteQueryToCSV $FileName $SQLStatement $Variables $ServerName $DBName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
+		}
+	}
+	else 
+	{
+		$Query = $TableListQuery #[4].ToString() # This one works if the location in Json file does not change. 
+		#$Query = ($TableListQuery | Select-Object $Query).Query #Did not work. 
+
+		$Tables = GetListToProcessOver $Query $ServerName $DBName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port 
+
+
+		foreach($row in $Tables.Tables[0])
+		{
+			#Add Variable Statement
+			$TableName =  $row["Name"]
+			$SchemaName =  $row["SchemaName"]
+		
+			$Variables = "@DBName:$DBName|@TableName:$TableName|@SchemaName:$SchemaName"
+
+			if($CommandType -eq "SQL")
+			{
+				WriteQueryToCSV $FileName $SQLStatement $Variables $ServerName $DBName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
+			}
+			elseif($CommandType -eq "DBCC")
+			{
+				##Need to add the DBCC statement for APS/ADW
+				if($SQLStatement.TOUpper() -eq 'PDW_SHOWSPACEUSED')
+				{
+
+					$SQLStatement2 = "DBCC PDW_SHOWSPACEUSED (""$SchemaName.$TableName"");"
+
+					# Need to figure out how this will work later 
+					#$ExternalTable = $row["Is_external"]								
+					if ($SourceSystem -eq "AZUREDW")
+					{
+						$ExternalTable = $row["Is_external"]
+					}
+					else
+					{
+						$ExternalTable = $false
+					}
+
+					if($ExternalTable -eq $false)
+					{
+						WriteShowSpaceUsedToCSV $FileName $SQLStatement2 $Variables $ServerName $DBName $SchemaName $TableName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
+					}
+				}	
+			}
+		}							
+	}
+}
+Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username, $Password, $ConnectionType, $QueryTimeout, $ConnectionTimeout, $SourceSystem, $Type)
 {
 	foreach($v in $VersionQueries)
 	{
@@ -343,8 +411,16 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 		$ds = $ReturnValues.Get_Item("DataSet")
 		foreach ($row in $ds.Tables[0]) 
 		{
-			$VersionValue =  $row["Version"] -match '(\d*\.\d*\.\d*\.\d*)'
-			$Version = $Matches[0]
+			if($Type -eq "VersionNumber")
+			{
+				$VersionValue =  $row["Version"] -match '(\d*\.\d*\.\d*\.\d*)'
+				$Version = $Matches[0]
+			}
+			else 
+			{
+				#$VersionText =  $row["Version"] -match '(\d*\.\d*\.\d*\.\d*)'
+				$Version = $row["Version"]
+			}
 		}
 	}
 	else 
@@ -392,7 +468,9 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 		$SourceSystem = ($v | Select-Object SourceSystem).SourceSystem
 		$PreAssessmentDriverFile = ($v | Select-Object PreAssessmentDriverFile).PreAssessmentDriverFile
 		$PreAssessmentOutputPath = ($v | Select-Object PreAssessmentOutputPath).PreAssessmentOutputPath
+		$PreAssessmentScriptPath = ($v | Select-Object PreAssessmentScriptPath).PreAssessmentScriptPath
 		$ServerName = ($v | Select-Object ServerName).ServerName
+		$DBFilter = ($v | Select-Object DBFilter).DBFilter
 		$QueryTimeout = ($v | Select-Object QueryTimeout).QueryTimeout
 		$ConnectionTimeout = ($v | Select-Object ConnectionTimeout).ConnectionTimeout
 	}
@@ -404,6 +482,11 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 		{
 			$DB_Default = ($v | Select-Object Database).Database
 			$Port = ($v | Select-Object Port).Port
+		}
+		$APSConfig = ($BaseJSON | Select-Object AZUREDW).AZUREDW
+		foreach($v in $APSConfig)
+		{
+			$DBVersionText = ($v | Select-Object DatabaseVersionName).DatabaseVersionName
 		}
 	}
 
@@ -467,7 +550,7 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 	. "$ScriptPath\RunSQLStatement.ps1"
 
 
-	$VersionRaw = GetDBVersion -VersionQueries $VersionQueries -ServerName $ServerName -Port $Port -Database $DB_Default -QueryTimeout $QueryTimeout -ConnectionTimeout $ConnectionTimeOut -UserName $UserName -Password $Password -ConnectionType  $ConnectionType -SourceSystem $SourceSystem 
+	$VersionRaw = GetDBVersion -VersionQueries $VersionQueries -ServerName $ServerName -Port $Port -Database $DB_Default -QueryTimeout $QueryTimeout -ConnectionTimeout $ConnectionTimeOut -UserName $UserName -Password $Password -ConnectionType  $ConnectionType -SourceSystem $SourceSystem -Type "VersionNumber"
 	$Version = [System.version]$VersionRaw
 	<# if ($Version -eq $null -or $Version -eq "" ) {		
 		
@@ -517,9 +600,13 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 				$RunFor = $ScriptToRun.RunFor
 				$CommandType = $ScriptToRun.CommandType
 				$ExportFileName = $ScriptToRun.ExportFileName
-				$SQLStatement = $ScriptToRun.SQLStatement
+				$ScriptName = $ScriptToRun.ScriptName
+				#$SQLStatement = $ScriptToRun.SQLStatement
 				$DBToProcess = $ScriptToRun.DB
-				
+
+				$ScriptFile = $PreAssessmentScriptPath + $ScriptName
+				$SQLStatement = Get-Content -Path $ScriptFile -Raw
+
 				$ObjFileName = Get-FileName $ExportFileName $PreAssessmentOutputPath
 
 				ForEach($fname in $ObjFileName )
@@ -544,76 +631,102 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 					foreach($row in $Databases.Tables[0])
 					{
 						$DBName =  $row["Name"]
-									
-						if($DBToProcess -ne $DBName -and $DBToProcess.toUpper() -ne 'ALL')
-						{
-							continue
-						}
-						if($RunFor.ToUpper() -ne "TABLE")
-						{
-							if($CommandType -eq "SCRIPTDB" -AND $SourceSystem.ToUpper() -eq 'NETEZZA')
-							{
-								#Display-LogMsg "$DBName $CommandType $SourceSystem"
-								$Variables = "@DBName:$DBName"
-	
-								WriteQueryToSchema -Filename $ObjFileName -Variables $Variables -DBName $DBName -FirstDBLoop $FirstDBLoop -SchemaExportFolder $SchemaExportFolder
-								$FirstDBLoop = $False
-							}
-							else
-							{
-								#Add Variable Statement
-							#$Variables = "@DBName:$DBName"
-							$Variables = "@DBName:$DBName|@SQLServerName:$ServerName"
-							WriteQueryToCSV $FileName $SQLStatement $Variables $ServerName $DBName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
-							}
-						}
-						else 
-						{
-							$Query = $TableListQuery #[4].ToString() # This one works if the location in Json file does not change. 
-							#$Query = ($TableListQuery | Select-Object $Query).Query #Did not work. 
-					
-							$Tables = GetListToProcessOver $Query $ServerName $DBName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port 
-
-
-							foreach($row in $Tables.Tables[0])
-							{
-								#Add Variable Statement
-								$TableName =  $row["Name"]
-								$SchemaName =  $row["SchemaName"]
 							
-								$Variables = "@DBName:$DBName|@TableName:$TableName|@SchemaName:$SchemaName"
-
-								if($CommandType -eq "SQL")
+						#if($DBFilter -ne '%')
+						#{
+							$splitFilter = $DBFilter.Split(",")
+							foreach($val in $splitFilter)
+							{
+								if($DBName.toUpper() -eq $val.Trim().toUpper() -or $DBFilter -eq '%')
 								{
-									WriteQueryToCSV $FileName $SQLStatement $Variables $ServerName $DBName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
-								}
-								elseif($CommandType -eq "DBCC")
-								{
-									##Need to add the DBCC statement for APS/ADW
-									if($SQLStatement.TOUpper() -eq 'PDW_SHOWSPACEUSED')
+									if(($DBToProcess -ne $DBName -and $DBToProcess.toUpper() -ne 'ALL') -and $DBFilter -ne '%')
 									{
+										continue
+									}
 
-										$SQLStatement2 = "DBCC PDW_SHOWSPACEUSED (""$SchemaName.$TableName"");"
-
-										# Need to figure out how this will work later 
-										#$ExternalTable = $row["Is_external"]								
-										if ($SourceSystem -eq "AZUREDW")
+									if($SourceSystem -eq 'AZUREDW')
+									{
+										$DBVersion = GetDBVersion -VersionQueries $VersionQueries -ServerName $ServerName -Port $Port -Database $DBName -QueryTimeout $QueryTimeout -ConnectionTimeout $ConnectionTimeOut -UserName $UserName -Password $Password -ConnectionType  $ConnectionType -SourceSystem $SourceSystem -Type "VersionText"
+										if($DBVersion -notmatch $DBVersionText)
 										{
-											$ExternalTable = $row["Is_external"]
+											Write-host "DB $DBName is not an $DBVersionText Database: Skipping DB"
+											continue
+										}
+										#Write-Host $DBVersion
+									}
+
+
+									if($RunFor.ToUpper() -ne "TABLE")
+									{
+										if($CommandType -eq "SCRIPTDB" -AND $SourceSystem.ToUpper() -eq 'NETEZZA')
+										{
+											#Display-LogMsg "$DBName $CommandType $SourceSystem"
+											$Variables = "@DBName:$DBName"
+				
+											WriteQueryToSchema -Filename $ObjFileName -Variables $Variables -DBName $DBName -FirstDBLoop $FirstDBLoop -SchemaExportFolder $SchemaExportFolder
+											$FirstDBLoop = $False
 										}
 										else
 										{
-											$ExternalTable = $false
+											#Add Variable Statement
+										#$Variables = "@DBName:$DBName"
+										$Variables = "@DBName:$DBName|@SQLServerName:$ServerName"
+										WriteQueryToCSV $FileName $SQLStatement $Variables $ServerName $DBName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
 										}
+									}
+									else 
+									{
+										$Query = $TableListQuery #[4].ToString() # This one works if the location in Json file does not change. 
+										#$Query = ($TableListQuery | Select-Object $Query).Query #Did not work. 
+								
+										$Tables = GetListToProcessOver $Query $ServerName $DBName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port 
 
-										if($ExternalTable -eq $false)
+
+										foreach($row in $Tables.Tables[0])
 										{
-											WriteShowSpaceUsedToCSV $FileName $SQLStatement2 $Variables $ServerName $DBName $SchemaName $TableName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
-										}
-									}	
+											#Add Variable Statement
+											$TableName =  $row["Name"]
+											$SchemaName =  $row["SchemaName"]
+										
+											$Variables = "@DBName:$DBName|@TableName:$TableName|@SchemaName:$SchemaName"
+
+											if($CommandType -eq "SQL")
+											{
+												WriteQueryToCSV $FileName $SQLStatement $Variables $ServerName $DBName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
+											}
+											elseif($CommandType -eq "DBCC")
+											{
+												##Need to add the DBCC statement for APS/ADW
+												if($SQLStatement.TOUpper() -eq 'PDW_SHOWSPACEUSED')
+												{
+
+													$SQLStatement2 = "DBCC PDW_SHOWSPACEUSED (""$SchemaName.$TableName"");"
+
+													# Need to figure out how this will work later 
+													#$ExternalTable = $row["Is_external"]								
+													if ($SourceSystem -eq "AZUREDW")
+													{
+														$ExternalTable = $row["Is_external"]
+													}
+													else
+													{
+														$ExternalTable = $false
+													}
+
+													if($ExternalTable -eq $false)
+													{
+														WriteShowSpaceUsedToCSV $FileName $SQLStatement2 $Variables $ServerName $DBName $SchemaName $TableName $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $SourceSystem $Port
+													}
+												}	
+											}
+										}							
+									} 
 								}
-							}							
-						}
+
+							}
+
+					#	}
+
 					}
 					
 				}

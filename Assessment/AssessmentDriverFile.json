@@ -3,9 +3,11 @@
 	"#Netezza-DatabaseAlt":"SYSTEM",
 	"General_Config":
 		[
-			{"PreAssessmentDriverFile":"H:\\Documents\\POC Files\\Assessment\\SQLScriptstoRun.csv",
-			"PreAssessmentOutputPath":"C:\\POCFiles\\OneDrive - Microsoft\\Clients\\BBB\\POC Files\\Logs\\Assessment",
-			"ServerName":"DBServerName",
+			{"PreAssessmentDriverFile":"C:\\TEMP\\Assessment\\SQLScriptstoRun.csv",
+			"PreAssessmentOutputPath":"C:\\TEMP\\Assessment\\Results",
+			"PreAssessmentScriptPath":"C:\\TEMP\\Assessment\\Scripts",
+			"ServerName":"ServerName",
+			"DBFilter":"%",
 			"SourceSystem":"AZUREDW",
 			"QueryTimeout":"600",
 			"ConnectionTimeout":"300"}
@@ -15,6 +17,12 @@
 		[
 			{"Database":"Master",
 			"Port":"17001"}
+		],
+
+	"AZUREDW":
+		[
+			{"DatabaseVersionName":"Microsoft Azure SQL Data Warehouse"
+			}
 		],
 	"TERADATA":
 		[

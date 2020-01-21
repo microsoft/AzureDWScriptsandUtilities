@@ -38,10 +38,12 @@ Below are the steps to run the Assessment Tool:
 
 **Step 1:** Update the General_Config section of the AssessmentDriverFile.json.
 
-- "PreAssessmentDriverFile":"C:\\TEMP\\SQLScriptstoRun.csv“
-- "PreAssessmentOutputPath":"C:\\Temp\\Netezza\\Pre-Assessment“
+- "PreAssessmentDriverFile":"C:\\\TEMP\\\SQLScriptstoRun.csv“
+- "PreAssessmentScriptPath":"C:\\\Temp\\\Assessment\Scripts“
+- "PreAssessmentOutputPath":"C:\\\Temp\\\Netezza\\\Pre-Assessment"
 - "ServerName":"192.xxx.xxx.xxx",
 - "SourceSystem":“APS“  --NETEZZA or APS or AZUREDW
+- "DBFilter":"%" --% for All DBs or a comma delimited list "DBOne, DBTwo"
 
 **Step 2:** 1.Update the Source System specific section of the AssessmentDriverFile.json. 
 
@@ -143,15 +145,15 @@ Note: This file only needs to edited if:
 - Need to update a query to run on a specific version of the source system.
 
 
-| Parameter      | Purpose                                                      | Value   (Sample)                                      |
-| -------------- | ------------------------------------------------------------ | ----------------------------------------------------- |
-| Active         | 1 – Run line, 0 – Skip line                                  | 0 or 1                                                |
-| SourceSystem   | Source system to connect to and run the Query against.       | <ul><li>Netezza</li><li>APS</li><li>AZUREDW</li></ul> |
-| RunFor         | <ul><li>DB = Run Query for each Database on the server</li><li>Server = Server level Query</li><li>Table = Run Query for each Table in each DB.</li></ul> | DB, Server, Table                                     |
-| DB             | Limit the DB to a single DB                                  | Database name                                         |
-| Command        | <ul><li>Type of Command to run.</li><li>SQL = Any Query statement</li><li>DBCC = DBCC PDW_ShowSpaceUsed (Only or APS/AzureDW)</li><li>ScriptDB  = Create the batch scripts to Script for the source System DB.  (Only for Netezza)</li></ul> | SQL, DBCC, ScriptDB                                   |
-| VersionFrom    | Each line is validated against the version of the DB.  As DB versions change, the Query may need to be changed for the given version or may not be valid on some version.  This the starting version that the line/query can be run on. | Depend on the source system                           |
-| VersionTo      | This the Ending version that the line/query can be run on.   | Depend on the source system                           |
+| Parameter    | Purpose                                                      | Value   (Sample)                                      |
+| ------------ | ------------------------------------------------------------ | ----------------------------------------------------- |
+| Active       | 1 – Run line, 0 – Skip line                                  | 0 or 1                                                |
+| SourceSystem | Source system to connect to and run the Query against.       | <ul><li>Netezza</li><li>APS</li><li>AZUREDW</li></ul> |
+| RunFor       | <ul><li>DB = Run Query for each Database on the server</li><li>Server = Server level Query</li><li>Table = Run Query for each Table in each DB.</li></ul> | DB, Server, Table                                     |
+| DB           | Limit the DB to a single DB                                  | Database name                                         |
+| ScriptName   | <ul><li>File name for the Command to run.</li></ul>          | SQL, DBCC, ScriptDB                                   |
+| VersionFrom  | Each line is validated against the version of the DB.  As DB versions change, the Query may need to be changed for the given version or may not be valid on some version.  This the starting version that the line/query can be run on. | Depend on the source system                           |
+| VersionTo    | This the Ending version that the line/query can be run on.   | Depend on the source system                           |
 | ExportFileName | Name to use to save the results of the query to.  A Timestamp will be appended
 to the end of the field value.  “DBSize_{TimeStamp}” | DBSize                                                |
 | SQLStatement   | Statement to be run against the source system                |                                                       |
