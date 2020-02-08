@@ -230,7 +230,8 @@ ForEach ($S in $csvFile )
 
 			$ReturnValues = RunSQLScriptFile -ServerName $ServerName -Username $UserName -Password $Password -SQLDWADIntegrated $ConnectToSQLDW -Database $DatabaseName -Query $Query 
 		}
-		else#if($DropTruncateIfExists -eq '' -or [string]::IsNullOrEmpty($DropTruncateIfExists))
+        #elseif($DropTruncateIfExists -eq '' -or [string]::IsNullOrEmpty($DropTruncateIfExists))
+		else        
 		{
 			$RunStatement = 0
 		}
