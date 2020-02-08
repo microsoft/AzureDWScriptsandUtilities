@@ -104,12 +104,16 @@ Function GetSchemaStatement
     [Parameter(Position=1, Mandatory=$false)] [string]$SchemaAuth
     ) 
 
-	$Query = "CREATE SCHEMA $SchemaName"
+	$Query = "IF NOT EXISTS(SELECT * FROM [INFORMATION_SCHEMA].[SCHEMATA] WHERE [SCHEMA_NAME] = '" + $SchemaName + "') 
+                BEGIN
+	                EXEC('CREATE SCHEMA " + $SchemaName
 
 	If($SchemaAuth -ne "")
 		{
-			$Query = $Query + ' AUTHORIZATION [' +  $SchemaAuth + ']'
+			$Query = $Query + " AUTHORIZATION [" +  $SchemaAuth + "]"
 		}
+
+    $Query = $Query + "') END"
 	
 	return $Query
 		
@@ -244,7 +248,12 @@ ForEach ($S in $csvFile )
                 #$Query =  [System.IO.File]::ReadAllText("$ScriptToRun")
 				$Query = GetSchemaStatement -SchemaName $SchemaName -SchemaAuth $SchemaAuth
 				             
+                #Create schema:             
                 $ReturnValues = RunSQLScriptFile -ServerName $ServerName -Username $UserName -Password $Password -SQLDWADIntegrated $ConnectToSQLDW -Database $DatabaseName -Query $Query -Variables $Variables #-SchemaName $SchemaName -TableName $TableName -DropIfExists $DropIfExists -StatusLogFile $StatusLogFile
+                
+                #Create object:
+                $ReturnValues = RunSQLScriptFile -ServerName $ServerName -Username $UserName -Password $Password -SQLDWADIntegrated $ConnectToSQLDW -Database $DatabaseName -InputFile $ScriptToRun -Variables $Variables #-SchemaName $SchemaName -TableName $TableName -DropIfExists $DropIfExists -StatusLogFile $StatusLogFile
+             
             }
             else
             {
