@@ -1,5 +1,6 @@
 ##############################################################################################
 ##-----------------------------------------------------------------------------------                        
+## Version 1.0 
 ## This Python program will clean up the SQLDW code for installations
 ## It perform makes the DDLs and DMLs ready to be installed in SQLDW:
 ##    (1) Tables: 
@@ -21,8 +22,11 @@
 ##           
 ##  Author:  Gaiye "Gail" Zhou    
 ##   
-##  July 2018   
-## 
+##  July 2018 
+##  
+## Version 2.0 update
+##  (1) Changed Statistics file prefix from "STATS_" to "STATSXYZ_"
+##  (2) Changed Index file prefix from "IDXS_" to "IDXSXYZ_"
 ###############################################################################################
 
 import sys
@@ -69,8 +73,10 @@ def cleanUpFile(srcDir, outDir, file, objectType):
 
     fi = open(os.path.join(srcDir, file), 'r') 
     fo = open(os.path.join(outDir, file), 'w')
-    idxsFn = "IDXS_" + file
-    statsFn = "STATS_" + file
+    #idxsFn = "IDXS_" + file
+    idxsFn = "IDXSXYZ_" + file # Updated Jan 18, 2020, to avoid possible file name duplicates. Gail Zhou
+    #statsFn = "STATS_" + file
+    statsFn = "STATSXYZ_" + file # Updated Jan 18, 2020, to avoid possible file name duplicates. Gail Zhou
     idxsFp = outDir + idxsFn
     statsFp = outDir + statsFn
     
