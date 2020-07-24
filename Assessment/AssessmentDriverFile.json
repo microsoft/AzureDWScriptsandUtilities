@@ -21,7 +21,8 @@
 
 	"AZUREDW":
 		[
-			{"DatabaseVersionName":"Microsoft Azure SQL Data Warehouse"
+			{"DatabaseEngineEdition":"6",
+				"DatabaseEngineEditionQuery":"SELECT SERVERPROPERTY('EngineEdition') as EngineEdition"
 			}
 		],
 	"TERADATA":

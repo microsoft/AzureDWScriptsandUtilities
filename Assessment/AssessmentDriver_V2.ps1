@@ -213,15 +213,15 @@ Function WriteQueryToCSV($FileName, $Query, $Variables, $ServerName, $Database, 
 	
 }
 
-Function WriteShowSpaceUsedToCSV($FileName, $Query, $Variables, $ServerName, $Database, $SchemaNAme, $TableName, $Username, $Password, $ConnectionType, $QueryTimeout, $ConnectionTimeout, $SourceSystem, $Port)
+Function WriteShowSpaceUsedToCSV($FileName, $Query, $Variables, $ServerName, $DBName, $SchemaNAme, $TableName, $Username, $Password, $ConnectionType, $QueryTimeout, $ConnectionTimeout, $SourceSystem, $Port)
 {
 
 	$ResultAs="DataSet"	
 
-	$ReturnValues = RunSQLStatement $ServerName $Database $Query $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $InputFile $ResultAs $Variables $SourceSystem $Port
+	$ReturnValues = RunSQLStatement $ServerName $DBName $Query $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $InputFile $ResultAs $Variables $SourceSystem $Port
 
 	$rows = New-Object PSObject 		 
-	$rows | Add-Member -MemberType NoteProperty -Name "DataBase" -Value $Database -force
+	$rows | Add-Member -MemberType NoteProperty -Name "DataBase" -Value $DBName -force
 	$rows | Add-Member -MemberType NoteProperty -Name "SchemaName" -Value $SchemaName -force
 	$rows | Add-Member -MemberType NoteProperty -Name "TableName" -Value $TableName -force
 
@@ -256,7 +256,7 @@ Function WriteShowSpaceUsedToCSV($FileName, $Query, $Variables, $ServerName, $Da
 
 			$pdwNodeId = $Row.Item("PDW_NODE_ID")
 			$distributionID = $Row.Item("DISTRIBUTION_ID")
-			$rowKey = $Database + '_' + $SchemaName + '_' + $TableName
+			$rowKey = $DBName + '_' + $SchemaName + '_' + $TableName
 	
 			$rows | Add-Member -MemberType NoteProperty -Name "Rows" -Value $numOfRowsInTable   -force
 
@@ -288,12 +288,12 @@ Function WriteShowSpaceUsedToCSV($FileName, $Query, $Variables, $ServerName, $Da
 		
 			$rows | Export-Csv -Path "$FileName" -Append -Delimiter "," -NoTypeInformation
 		}
-		Display-LogMsg "Success for Query: DB: ($Database) Query: $Query "
+		Display-LogMsg "Success for Query: DB: ($DBName) Query: $Query "
 	}
 	else {
 
 		# DBCC PDW_SHOWSPACEUSED Fails for Certain Tables. 
-		Display-ErrorMsg "    Did Not Succeed for Query: DB ($Database) Query: $Query "
+		Display-ErrorMsg "    Did Not Succeed for Query: DB ($DBName) Query: $Query "
 	}
 }
 
@@ -382,6 +382,46 @@ function ContinueProcess {
 		}							
 	}
 }
+
+Function GetDBEngineEdition($DBEditionQuery, $ServerName, $Port, $Database, $Username, $Password, $ConnectionType, $QueryTimeout, $ConnectionTimeout, $SourceSystem)
+{
+	$ResultAs="DataSet"
+	
+	#Display-LogMsg "VersionQuery:$VersionQuery"
+
+	$ReturnValues = RunSQLStatement $ServerName $Database $DBEditionQuery $Username $Password $ConnectionType $QueryTimeout $ConnectionTimeout $InputFile $ResultAs $Variables $SourceSystem $Port
+	
+	#Check for Error
+	if($ReturnValues.Get_Item("Status") -eq 'Success')
+	{
+		$ds = $ReturnValues.Get_Item("DataSet")
+		foreach ($row in $ds.Tables[0]) 
+		{
+			#$VersionText =  $row["Version"] -match '(\d*\.\d*\.\d*\.\d*)'
+			$EngineEdition = $row["EngineEdition"]
+			
+		}
+	}
+	else 
+	{
+		$theErrorMessage = $ReturnValues.Get_Item("Msg").Exception.Message
+
+		Display-ErrorMsg "Issue with Executing SQL :: $theErrorMessage " 
+
+		if ($theErrorMessage.Contains("does not exist") -AND $theErrorMessage.Contains("Database")) {
+			Display-ErrorMsg "Check the default database: [MASTER_DB/SYSTEM]"
+		}
+		if ($theErrorMessage.Contains("Timeout expired") -AND $theErrorMessage.Contains("ERROR")) {
+			Display-ErrorMsg "Check the IP Address is correct and the server is running."
+		}
+
+		if ($theErrorMessage.Contains("A network-related or instance-specific error occurred") -AND $theErrorMessage.Contains("ERROR")) {
+			exit(0)
+		}
+    }
+	#Need to break out of code here if $verion is not returned.
+	return $EngineEdition 
+}
 Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username, $Password, $ConnectionType, $QueryTimeout, $ConnectionTimeout, $SourceSystem, $Type)
 {
 	foreach($v in $VersionQueries)
@@ -413,6 +453,7 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 		{
 			if($Type -eq "VersionNumber")
 			{
+				$testversion = $row["Version"]
 				$VersionValue =  $row["Version"] -match '(\d*\.\d*\.\d*\.\d*)'
 				$Version = $Matches[0]
 			}
@@ -486,7 +527,8 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 		$APSConfig = ($BaseJSON | Select-Object AZUREDW).AZUREDW
 		foreach($v in $APSConfig)
 		{
-			$DBVersionText = ($v | Select-Object DatabaseVersionName).DatabaseVersionName
+			#$DBVersionText = ($v | Select-Object DatabaseVersionName).DatabaseVersionName
+			$DBEdition = ($v | Select-Object DatabaseEngineEdition).DatabaseEngineEdition
 		}
 	}
 
@@ -646,10 +688,13 @@ Function GetDBVersion($VersionQueries, $ServerName, $Port, $Database, $Username,
 
 									if($SourceSystem -eq 'AZUREDW')
 									{
-										$DBVersion = GetDBVersion -VersionQueries $VersionQueries -ServerName $ServerName -Port $Port -Database $DBName -QueryTimeout $QueryTimeout -ConnectionTimeout $ConnectionTimeOut -UserName $UserName -Password $Password -ConnectionType  $ConnectionType -SourceSystem $SourceSystem -Type "VersionText"
-										if($DBVersion -notmatch $DBVersionText)
+										$DBEditionQuery = ($v | Select-Object DatabaseEngineEditionQuery).DatabaseEngineEditionQuery
+										$DBEngineEdition = GetDBEngineEdition -DBEditionQuery $DBEditionQuery -ServerName $ServerName -Port $Port -Database $DBName -QueryTimeout $QueryTimeout -ConnectionTimeout $ConnectionTimeOut -UserName $UserName -Password $Password -ConnectionType  $ConnectionType -SourceSystem $SourceSystem
+										#$DBVersion = GetDBVersion -VersionQueries $VersionQueries -ServerName $ServerName -Port $Port -Database $DBName -QueryTimeout $QueryTimeout -ConnectionTimeout $ConnectionTimeOut -UserName $UserName -Password $Password -ConnectionType  $ConnectionType -SourceSystem $SourceSystem -Type "VersionText"
+										#if($DBVersion -notmatch $DBVersionText)
+										if($DBEngineEdition -ne $DBEdition)
 										{
-											Write-host "DB $DBName is not an $DBVersionText Database: Skipping DB"
+											Write-host "DB $DBName is not an Azure Synapse SQL Pool Database: Skipping DB"
 											continue
 										}
 										#Write-Host $DBVersion
