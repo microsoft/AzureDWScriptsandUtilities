@@ -1,6 +1,10 @@
 
-# Process and Tools for APS Pre-Assessment, Migration Scoping, and APS to Azure SQLDW Code and Data Migration 
+# Please note that we have an enhanced version of APS to Azure Synapse Analytics (formerly Azure SQL DW) Migratin Process. Please use the new version, also published at GitHub. 
+Link here: 
 
+https://github.com/microsoft/AzureSynapseScriptsAndAccelerators/tree/main/Migration/APS
+
+# Process and Tools for APS Pre-Assessment, Migration Scoping, and APS to Azure SQLDW Code and Data Migration 
 
 ## The APS Pre-Assessment and Migration Scoping Tools 
 
