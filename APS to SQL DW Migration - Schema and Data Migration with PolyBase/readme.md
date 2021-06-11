@@ -1,5 +1,5 @@
 
-# Please note that we have an enhanced version of APS to Azure Synapse Analytics (formerly Azure SQL DW) Migratin Process. Please use the new version, also published at GitHub. Link below:
+# Please note that we have an enhanced version of APS to Azure Synapse Analytics (formerly Azure SQL DW) Migratin Process. The new version is also published at GitHub. Link below:
 
 https://github.com/microsoft/AzureSynapseScriptsAndAccelerators/tree/main/Migration/APS
 
