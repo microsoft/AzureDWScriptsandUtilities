@@ -1,9 +1,11 @@
 
-# Contributing
+# Important Message
 
 ### Please note that we have a new publicly available GitHub repository with upgraded functionalities for working with Azure Synapse Analytics (formerly Azure SQL DW). This old repository will not be updated anymore. Our team will focus on adding new capabilities to the new repository. Please use below link to access the new repository:
 
 https://github.com/microsoft/AzureSynapseScriptsAndAccelerators
+
+# Contributing
 
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
