@@ -1,4 +1,4 @@
-### Please note that we have a new publicly available GitHub repository with upgraded functionalities for working with Azure Synapse Analytics (formerly Azure SQL DW). This old repository will not be updated anymore. Our team will focus on adding new capabilities to the new repository. Please use below link to access the new repository:
+### Please note that we have a new publicly available GitHub repository with upgraded functionalities. This old repository will not be updated anymore. Our team will focus on adding new capabilities to the new repository. Please use below link to access Assessment folder in the new repository:
 
 https://github.com/microsoft/AzureSynapseScriptsAndAccelerators/tree/main/Assessment
 
